@@ -67,6 +67,7 @@
             // 
             // addWellButton
             // 
+            this.addWellButton.AllowFocus = false;
             this.addWellButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.addWellButton.Location = new System.Drawing.Point(8, 555);
             this.addWellButton.Name = "addWellButton";
@@ -112,6 +113,7 @@
             // 
             // deleteWellButton
             // 
+            this.deleteWellButton.AllowFocus = false;
             this.deleteWellButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.deleteWellButton.Location = new System.Drawing.Point(165, 555);
             this.deleteWellButton.Name = "deleteWellButton";
