@@ -1,13 +1,4 @@
-﻿using DevExpress.XtraEditors;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace PressureMap.Demo
 {
@@ -16,6 +7,15 @@ namespace PressureMap.Demo
         public PressureMapForm()
         {
             InitializeComponent();
+            
+            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+            
+            int formWidth = screenWidth * 4 / 5;
+            int formHeight = screenHeight * 6 / 7;
+            
+            this.Width = formWidth;
+            this.Height = formHeight;
         }
     }
 }

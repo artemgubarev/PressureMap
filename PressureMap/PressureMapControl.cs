@@ -1,14 +1,15 @@
 ﻿namespace PressureMap
 {
-    using System;
     using DevExpress.Utils;
     using DevExpress.XtraCharts;
+    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Drawing;
     using System.Globalization;
     using System.Windows.Forms;
     using Excel = Microsoft.Office.Interop.Excel;
+    using System.Linq;
 
     public partial class PressureMapControl : DevExpress.XtraEditors.XtraUserControl
     {
@@ -56,7 +57,7 @@
             InitializeInjectionDataTable();
             InitializeInjectionChartControl();
             ChartInitTest();
-            ChartUpdate(1);
+            ChartUpdate(0);
 
             AddNewInjectionData(new List<(double t, double Q)>()
             {
@@ -64,6 +65,31 @@
                 (1, 2),
                 (4, 3),
             });
+
+            //double p0 = (double)p0SpinEdit.Value;
+            //double mu = (double)muSpinEdit.Value;
+            //double Q = (double)qSpinEdit.Value;
+            //double k = (double)kSpinEdit.Value;
+            //double H = (double)hSpinEdit.Value;
+            //double phi0 = (double)phi0SpinEdit.Value;
+            //double ct = (double)ctSpinEdit.Value;
+            //double D = k / (mu * phi0 * ct);
+
+            //var calc = new PressureCalculator(p0, mu, Q, k, H, D);
+            //double[] x = Linspace(-5, 100, 1000);
+            //double[] y = Linspace(-5, 100, 1000);
+
+            //double[][] coords = new[] { new double[] { 20, 40 } };
+
+            //var result = calc.ComputatePressureConst(x, y, 5, coords);
+        }
+
+        public static double[] Linspace(double start, double stop, int num)
+        {
+            double step = (stop - start) / (num - 1);
+            return Enumerable.Range(0, num)
+                .Select(i => start + i * step)
+                .ToArray();
         }
 
         private void InitializeInjectionDataTable()
@@ -286,6 +312,11 @@
         {
             int value = ((DevExpress.XtraEditors.TrackBarControl)sender).Value;
             ChartUpdate((double)value);
+        }
+
+        private void simpleButton1_Click(object sender, EventArgs e)
+        {
+            var t = pictureEdit10.EditValue;
         }
     }
 }
