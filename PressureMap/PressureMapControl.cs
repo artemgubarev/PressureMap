@@ -10,6 +10,8 @@
     using System.Windows.Forms;
     using Excel = Microsoft.Office.Interop.Excel;
     using System.Linq;
+    using DevExpress.ClipboardSource.SpreadsheetML;
+    using DevExpress.XtraCharts.Heatmap;
 
     public partial class PressureMapControl : DevExpress.XtraEditors.XtraUserControl
     {
@@ -66,22 +68,7 @@
                 (4, 3),
             });
 
-            //double p0 = (double)p0SpinEdit.Value;
-            //double mu = (double)muSpinEdit.Value;
-            //double Q = (double)qSpinEdit.Value;
-            //double k = (double)kSpinEdit.Value;
-            //double H = (double)hSpinEdit.Value;
-            //double phi0 = (double)phi0SpinEdit.Value;
-            //double ct = (double)ctSpinEdit.Value;
-            //double D = k / (mu * phi0 * ct);
-
-            //var calc = new PressureCalculator(p0, mu, Q, k, H, D);
-            //double[] x = Linspace(-5, 100, 1000);
-            //double[] y = Linspace(-5, 100, 1000);
-
-            //double[][] coords = new[] { new double[] { 20, 40 } };
-
-            //var result = calc.ComputatePressureConst(x, y, 5, coords);
+           
         }
 
         public static double[] Linspace(double start, double stop, int num)
@@ -310,13 +297,68 @@
 
         private void trackBarControl1_Scroll(object sender, EventArgs e)
         {
-            int value = ((DevExpress.XtraEditors.TrackBarControl)sender).Value;
-            ChartUpdate((double)value);
+            double p0 = (double)p0SpinEdit.Value;
+            double mu = (double)muSpinEdit.Value;
+            double Q = (double)qSpinEdit.Value;
+            double k = (double)kSpinEdit.Value;
+            double H = (double)hSpinEdit.Value;
+            double phi0 = (double)phi0SpinEdit.Value;
+            double ct = (double)ctSpinEdit.Value;
+            double D = k / (mu * phi0 * ct);
+
+            var calc = new PressureCalculator(p0, mu, Q, k, H, D);
+
+            int xCount = 1000;
+            int yCount = 1000;
+
+            double[] x = Linspace(-5, 100, xCount);
+            double[] y = Linspace(-5, 100, yCount);
+
+            double[][] coords = new[]
+            {
+                new double[] { 10.0, 20.0 } ,
+                new double[] { 30.0, 40.0 } ,
+                new double[] { 50.0, 60.0 } ,
+            };
+
+            double t = (double)((DevExpress.XtraEditors.TrackBarControl)sender).Value;
+            double[,] pressure = calc.ComputatePressureConst(x, y, t, coords);
+
+            HeatmapMatrixAdapter dataAdapter = new HeatmapMatrixAdapter();
+            dataAdapter.XArguments = GenerateAxisLabels(xCount, "X");
+            dataAdapter.YArguments = GenerateAxisLabels(yCount, "Y");
+            dataAdapter.Values = pressure;
+            heatmapControl1.DataAdapter = dataAdapter;
+
+            Palette palette = new Palette("Custom") {
+                Color.White,
+                Color.SkyBlue,
+                Color.DarkBlue
+            };
+            
+            var colorProvider = new HeatmapRangeColorProvider
+            {
+                Palette = palette,
+                ApproximateColors = true
+            };
+
+            colorProvider.RangeStops.Add(new HeatmapRangeStop(0, HeatmapRangeStopType.Percentage));
+            colorProvider.RangeStops.Add(new HeatmapRangeStop(50000000, HeatmapRangeStopType.Absolute));
+            colorProvider.RangeStops.Add(new HeatmapRangeStop(61000000, HeatmapRangeStopType.Absolute));
+            colorProvider.RangeStops.Add(new HeatmapRangeStop(1, HeatmapRangeStopType.Percentage));
+
+            heatmapControl1.ColorProvider = colorProvider;
+
         }
 
-        private void simpleButton1_Click(object sender, EventArgs e)
+        private string[] GenerateAxisLabels(int count, string prefix)
         {
-            var t = pictureEdit10.EditValue;
+            string[] labels = new string[count];
+            for (int i = 0; i < count; i++)
+            {
+                labels[i] = $"{prefix}{i + 1}";
+            }
+            return labels;
         }
     }
 }

@@ -4,28 +4,28 @@
 
     internal class PressureCalculator
     {
-        private double p0;
-        private double mu;
-        private double Q;
-        private double k;
-        private double H;
-        private double D;
+        private double _p0;
+        private double _mu;
+        private double _Q;
+        private double _k;
+        private double _H;
+        private double _D;
 
         public PressureCalculator(double p0, double mu, double Q, double k, double H, double D)
         {
-            this.p0 = p0;
-            this.mu = mu;
-            this.Q = Q;
-            this.k = k;
-            this.H = H;
-            this.D = D;
+            this._p0 = p0;
+            this._mu = mu;
+            this._Q = Q;
+            this._k = k;
+            this._H = H;
+            this._D = D;
         }
 
         // вычислить давление в точке (x,y) в момент времени t
         private double p(double x, double y, double t)
         {
-            return p0 + ((mu * Q) / (4 * Math.PI * k * H)) 
-                * ExpIntegralEi(-(x * x + y * y) / (4 * D * t));
+            return _p0 + ((_mu * _Q) / (4 * Math.PI * _k * _H)) * 
+                SpecialFunctions.ExponentialIntegral(-(x * x + y * y) / (4 * _D * t));
         }
 
         internal double[,] ComputatePressureConst(double[] x, double[] y,double t, 
@@ -56,30 +56,14 @@
                         {
                             double cx = coord[0];
                             double cy = coord[1];
-                            P[i, j] += p(x[j] - cx, y[i] - cy, t);
+                            double pressure = p(x[j] - cx, y[i] - cy, t);
+                            P[i, j] += pressure;
                         }
                     }
                 }
             }
             return P;
         }
-
-        // Экспоненциальный интеграл (Ei)
-        private double ExpIntegralEi(double x)
-        {
-            const double euler = 0.5772156649015328606065120900824024;
-            double sum = 0;
-            double term = 1;
-            int n = 1;
-
-            while (Math.Abs(term) > 1e-15 * Math.Abs(sum))
-            {
-                sum += term;
-                term *= x / n;
-                n++;
-            }
-
-            return euler + Math.Log(Math.Abs(x)) + sum;
-        }
+        
     }
 }

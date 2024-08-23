@@ -69,9 +69,9 @@
             this.injectionDataGridControl = new DevExpress.XtraGrid.GridControl();
             this.injectionDataGridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
+            this.heatmapControl1 = new DevExpress.XtraCharts.Heatmap.HeatmapControl();
             this.trackBarControl1 = new DevExpress.XtraEditors.TrackBarControl();
             this.chartControl1 = new DevExpress.XtraCharts.ChartControl();
-            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.wellMapChartControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xTextEdit.Properties)).BeginInit();
@@ -268,7 +268,6 @@
             // 
             // xtraTabPage5
             // 
-            this.xtraTabPage5.Controls.Add(this.simpleButton1);
             this.xtraTabPage5.Controls.Add(this.loadFromExcelButton);
             this.xtraTabPage5.Controls.Add(this.xLabel);
             this.xtraTabPage5.Controls.Add(this.wellGridControl);
@@ -647,22 +646,33 @@
             // 
             // xtraTabPage3
             // 
+            this.xtraTabPage3.Controls.Add(this.heatmapControl1);
             this.xtraTabPage3.Controls.Add(this.trackBarControl1);
             this.xtraTabPage3.Controls.Add(this.chartControl1);
             this.xtraTabPage3.Name = "xtraTabPage3";
             this.xtraTabPage3.Size = new System.Drawing.Size(1095, 894);
             this.xtraTabPage3.Text = "Карта давлений";
             // 
+            // heatmapControl1
+            // 
+            this.heatmapControl1.Border.Visibility = DevExpress.Utils.DefaultBoolean.False;
+            this.heatmapControl1.Legend.Visibility = DevExpress.Utils.DefaultBoolean.True;
+            this.heatmapControl1.Location = new System.Drawing.Point(43, 8);
+            this.heatmapControl1.Name = "heatmapControl1";
+            this.heatmapControl1.Size = new System.Drawing.Size(1030, 817);
+            this.heatmapControl1.TabIndex = 9;
+            this.heatmapControl1.Text = "heatmapControl1";
+            // 
             // trackBarControl1
             // 
             this.trackBarControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBarControl1.EditValue = null;
-            this.trackBarControl1.Location = new System.Drawing.Point(20, 264);
+            this.trackBarControl1.Location = new System.Drawing.Point(9, 846);
             this.trackBarControl1.Name = "trackBarControl1";
             this.trackBarControl1.Properties.LabelAppearance.Options.UseTextOptions = true;
             this.trackBarControl1.Properties.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.trackBarControl1.Size = new System.Drawing.Size(137, 45);
+            this.trackBarControl1.Size = new System.Drawing.Size(651, 45);
             this.trackBarControl1.TabIndex = 8;
             this.trackBarControl1.Scroll += new System.EventHandler(this.trackBarControl1_Scroll);
             // 
@@ -677,15 +687,6 @@
             this.chartControl1.SeriesSerializable = new DevExpress.XtraCharts.Series[0];
             this.chartControl1.Size = new System.Drawing.Size(377, 211);
             this.chartControl1.TabIndex = 7;
-            // 
-            // simpleButton1
-            // 
-            this.simpleButton1.Location = new System.Drawing.Point(148, 784);
-            this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(75, 23);
-            this.simpleButton1.TabIndex = 10;
-            this.simpleButton1.Text = "simpleButton1";
-            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
             // 
             // PressureMapControl
             // 
@@ -786,6 +787,6 @@
         private DevExpress.XtraEditors.PictureEdit pictureEdit13;
         private DevExpress.XtraEditors.SpinEdit qSpinEdit;
         private DevExpress.XtraEditors.PictureEdit pictureEdit14;
-        private DevExpress.XtraEditors.SimpleButton simpleButton1;
+        private DevExpress.XtraCharts.Heatmap.HeatmapControl heatmapControl1;
     }
 }
