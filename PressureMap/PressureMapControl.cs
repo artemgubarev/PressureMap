@@ -22,7 +22,6 @@
         private List<Well> _wellList;
         private const int _xCount = 1000;
         private const int _yCount = 1000;
-
         private List<double[,]> _pressures;
 
         #region график расхода Test
@@ -61,8 +60,6 @@
             InitializeComponent();
             InitializeWellTable();
             InitializeWellChartControl();
-            InitializeInjectionDataTable();
-            InitializeInjectionChartControl();
             ChartInitTest();
             ChartUpdate(0);
             UpdateTrackBar();
@@ -70,12 +67,8 @@
             _wellList = new List<Well>();
             _pressures = new List<double[,]>();
 
-            AddNewInjectionData(new List<(double t, double Q)>()
-            {
-                (0, 0),
-                (1, 2),
-                (4, 3),
-            });
+            wellMapChartControl.ToolTipController = new ToolTipController();
+            wellMapChartControl.ToolTipController.ShowBeak = true;
         }
 
         private void UpdateTrackBar()
@@ -84,16 +77,20 @@
             int step = (int)stepNumericUpDown.Value;
 
             timesTrackBarControl.Properties.Minimum = 0;
-            timesTrackBarControl.Properties.Maximum = days;
+            timesTrackBarControl.Properties.Maximum = days / step;
 
             var date = startDateEdit.DateTime;
             timesTrackBarControl.Properties.Labels.Clear();
-            var labels = new TrackBarLabel[days / step + 1];
-            for (int i = 0; i <= days; i += step)
+            var labels = new TrackBarLabel[days / step + 2];
+
+            for (int i = 0; i <= (days / step) + 1; i ++)
             {
-                labels[i / step] = new TrackBarLabel(date.ToString("dd.MM.yyyy"), i);
+                labels[i] =
+                    new TrackBarLabel(date.ToString("dd.MM.yyyy"), i);
                 date = date.AddDays(step);
             }
+           
+            timesTrackBarControl.Properties.TickFrequency = 1;
             timesTrackBarControl.Properties.Labels.AddRange(labels);
         }
 
@@ -104,14 +101,6 @@
             return (end - start).Days;
         }
 
-        private void InitializeInjectionDataTable()
-        {
-            _injectionDataTable = new DataTable();
-            _injectionDataTable.Columns.Add("t");
-            _injectionDataTable.Columns.Add("Q");
-            injectionDataGridControl.DataSource = _injectionDataTable;
-        }
-
         private void InitializeWellTable()
         {
             _wellsDataTable = new DataTable();
@@ -119,22 +108,6 @@
             _wellsDataTable.Columns.Add("X");
             _wellsDataTable.Columns.Add("Y");
             wellGridControl.DataSource = _wellsDataTable;
-        }
-
-        private void InitializeInjectionChartControl()
-        {
-            _injectionSeries = new Series("Данные закачки", ViewType.Line);
-            _injectionSeries.View.Color = Color.Blue;
-
-            injectionDataChartControl.BeginInit();
-            injectionDataChartControl.Series.Add(_injectionSeries);
-            var diagram = new XYDiagram();
-            diagram.AxisX.Title.Text = "Время";
-            diagram.AxisX.Title.Visibility = DefaultBoolean.True;
-            diagram.AxisY.Title.Text = "Расход";
-            diagram.AxisY.Title.Visibility = DefaultBoolean.True;
-            injectionDataChartControl.Diagram = diagram;
-            injectionDataChartControl.EndInit();
         }
 
         private void InitializeWellChartControl()
@@ -154,14 +127,16 @@
             
             diagram.AxisX.GridLines.Visible = true;
             diagram.AxisX.GridLines.MinorVisible = false;
-            diagram.AxisX.GridLines.Color = Color.LightGray;
+            diagram.AxisX.GridLines.Color = Color.DimGray;
             diagram.AxisX.GridLines.LineStyle.DashStyle = DashStyle.Dash;
             
             diagram.AxisY.GridLines.Visible = true;
             diagram.AxisY.GridLines.MinorVisible = false;
-            diagram.AxisY.GridLines.Color = Color.LightGray;
+            diagram.AxisY.GridLines.Color = Color.DimGray;
             diagram.AxisY.GridLines.LineStyle.DashStyle = DashStyle.Dash;
-            
+
+            diagram.DefaultPane.BackColor = Color.LightBlue;
+
             wellMapChartControl.Diagram = diagram;
 
             wellMapChartControl.EndInit();
@@ -198,23 +173,13 @@
             {
                 _wellsDataTable.Rows.Add(new object[] { well.Number, well.X, well.Y });
                 var point = new SeriesPoint(well.X, well.Y);
+                point.Tag = well.Number;
                 _wellSeries.Points.Add(point);
             }
             wellMapChartControl.RefreshData();
             _wellList.AddRange(wells);
         }
-
-        private void AddNewInjectionData(IEnumerable<(double t, double Q)> injectionData)
-        {
-            foreach (var data in injectionData)
-            {
-                _injectionDataTable.Rows.Add(new object[] { data.t, data.Q });
-                var point = new SeriesPoint(data.t, data.Q);
-               _injectionSeries.Points.Add(point);
-            }
-            injectionDataChartControl.RefreshData();
-        }
-
+        
         private void addWellButton_Click(object sender, System.EventArgs e)
         {
             string xStr = xTextEdit.Text;
@@ -246,6 +211,7 @@
 
             xTextEdit.Text = string.Empty;
             yTextEdit.Text = string.Empty;
+            wellNumberTextEdit.Text = string.Empty;
         }
 
         private void deleteWellButton_Click(object sender, System.EventArgs e)
@@ -270,101 +236,125 @@
         {
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Excel files (*.xlsx;*.xls)|*.xlsx;*.xls";
-            
+            var xCoords = new List<(int Num, double X)>();
+            var yCoords = new List<(int Num, double Y)>();
+
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string filePath = openFileDialog.FileName;
-                var coordinates = new List<(double X, double Y)>();
-                var errorMessages = new List<string>();
-
-                var excelApp = new Excel.Application();
-                var workbook = excelApp.Workbooks.Open(filePath);
-                var worksheet = workbook.Sheets[1];
-                var usedRange = worksheet.UsedRange;
-                int rowCount = usedRange.Rows.Count;
+                Excel.Application excelApp = new Excel.Application();
+                Excel.Workbook workbook = excelApp.Workbooks.Open(filePath);
                 
-                for (int row = 2; row <= rowCount; row++)
+                Excel.Worksheet worksheetX = workbook.Sheets[3];
+                Excel.Worksheet worksheetY = workbook.Sheets[4];
+                
+                int numRow = 1; 
+                int valueRow = 2;
+
+                ParseSheetData(worksheetX, numRow, valueRow, xCoords);
+                ParseSheetData(worksheetY, numRow, valueRow, yCoords);
+
+                var combined = from x in xCoords  
+                               join y in yCoords on x.Num equals y.Num
+                               select (x.Num, x.X, y.Y);
+
+                var wells = new List<Well>();
+                foreach (var value in combined)
                 {
-                    Excel.Range cellX = (Excel.Range)worksheet.Cells[row, 1];
-                    Excel.Range cellY = (Excel.Range)worksheet.Cells[row, 2];
-
-                    if (cellX.Value2 != null && cellY.Value2 != null)
-                    {
-                        if (IsDoubleValueValid(cellX.Value2.ToString(), out double xValue))
-                        {
-                            if (IsDoubleValueValid(cellY.Value2.ToString(), out double yValue))
-                            {
-                                // Добавляем координаты в список
-                                coordinates.Add((xValue, yValue));
-                            }
-                        }
-                        else
-                        {
-                            errorMessages.Add(
-                                $"Невозможно преобразовать значения в строке {row} в числа.");
-                        }
-                    }
-                    else
-                    {
-                        errorMessages.Add($"Пустая ячейка в строке {row}.");
-                    }
+                    wells.Add(new Well(value.Num, value.X, value.Y));
                 }
-                
+                AddNewWells(wells);
+
                 workbook.Close(false);
                 excelApp.Quit();
                 
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheetX);
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
+            }
+        }
 
-                //AddNewWells(coordinates);
+        private void ParseSheetData(Excel.Worksheet worksheet, int numRow, int valueRow,
+            List<(int Number, double Value)> coordsList)
+        {
+            for (int col = 1; col <= worksheet.UsedRange.Columns.Count; col++)
+            {
+                Excel.Range cellNum = worksheet.Cells[numRow, col];
+                string cellValueNumStr = cellNum.Value?.ToString() ?? string.Empty;
 
-                // show errors
-                if (errorMessages.Count != 0)
+                Excel.Range valueCell = worksheet.Cells[valueRow, col];
+                string valueCellStr = valueCell.Value?.ToString() ?? string.Empty;
+
+                if (!IsDoubleValueValid(valueCellStr, out double value))
                 {
-                    string errorMessage = string.Empty;
-                    foreach (var message in errorMessages)
-                    {
-                        errorMessage += message + "\n";
-                    }
-                    MessageBox.Show(errorMessage);
+                    continue;
                 }
+
+                if (!int.TryParse(cellValueNumStr, NumberStyles.Any,
+                        CultureInfo.InvariantCulture, out int number))
+                {
+                    continue;
+                }
+
+                coordsList.Add((number, value));
+            }
+        }
+
+        private void UpdateHeatMap(double[,] pressure)
+        {
+            var dataAdapter = new HeatmapMatrixAdapter();
+            dataAdapter.XArguments = GenerateAxisLabels(_xCount);
+            dataAdapter.YArguments = GenerateAxisLabels(_yCount);
+            dataAdapter.Values = pressure;
+            pressureHeatmapControl.DataAdapter = dataAdapter;
+            
+            double minValue = pressure.Cast<double>().Min();
+            double maxValue = pressure.Cast<double>().Max();
+
+            if (minValue == maxValue)
+            {
+                var palette = new Palette("SolidColor")
+                {
+                    Color.Blue
+                };
+
+                var colorProvider = new HeatmapRangeColorProvider();
+                colorProvider.RangeStops.Add(new HeatmapRangeStop(0, HeatmapRangeStopType.Absolute));
+                colorProvider.RangeStops.Add(new HeatmapRangeStop(100, HeatmapRangeStopType.Absolute));
+
+
+                pressureHeatmapControl.ColorProvider = colorProvider;
+                pressureHeatmapControl.Refresh();
+            }
+            else
+            {
+                var palette = new Palette("Custom") {
+                    Color.Red,
+                    Color.Orange,
+                    Color.Yellow,
+                    Color.Green,
+                    Color.Cyan,
+                    Color.Blue,
+                    Color.DarkBlue,
+                    Color.DarkMagenta,
+                };
+
+                var colorProvider = new HeatmapRangeColorProvider
+                {
+                    Palette = palette,
+                    ApproximateColors = true,
+                };
+
+                for (double i = 0.0; i <= 1.0; i += 0.125)
+                {
+                    colorProvider.RangeStops.Add(
+                        new HeatmapRangeStop(i, HeatmapRangeStopType.Percentage));
+                }
+
+                pressureHeatmapControl.ColorProvider = colorProvider;
             }
         }
         
-        private void UpdateHeatMap(double[,] pressure, int xCount, int yCount)
-        {
-            var dataAdapter = new HeatmapMatrixAdapter();
-            dataAdapter.XArguments = GenerateAxisLabels(xCount);
-            dataAdapter.YArguments = GenerateAxisLabels(yCount);
-            dataAdapter.Values = pressure;
-            pressureHeatmapControl.DataAdapter = dataAdapter;
-
-            var palette = new Palette("Custom") {
-                Color.Red,
-                Color.Orange,
-                Color.Yellow,
-                Color.Green,
-                Color.Cyan,
-                Color.Blue,
-                Color.DarkBlue,
-                Color.DarkMagenta
-            };
-
-            var colorProvider = new HeatmapRangeColorProvider
-            {
-                Palette = palette,
-                ApproximateColors = true,
-            };
-
-            for (double i = 0.0; i < 1.0; i+=0.125)
-            {
-                colorProvider.RangeStops.Add(
-                    new HeatmapRangeStop(i, HeatmapRangeStopType.Percentage));
-            }
-            
-            pressureHeatmapControl.ColorProvider = colorProvider;
-        }
-
         private string[] GenerateAxisLabels(int count)
         {
             string[] labels = new string[count];
@@ -377,6 +367,11 @@
 
         private void runSimpleButton_Click(object sender, EventArgs e)
         {
+            if (_wellList.Count == 0)
+            {
+                return;
+            }
+
             double p0 = (double)p0SpinEdit.Value;
             double mu = (double)muSpinEdit.Value;
             double Q = (double)qSpinEdit.Value;
@@ -389,17 +384,37 @@
             var calculator = new PressureCalculator(p0, mu, Q, k, H, D);
 
             double[] times = GetTimes();
-            
-            double[] x = Linspace(-5, 100, _xCount);
-            double[] y = Linspace(-5, 100, _yCount);
+            double[][] coords = new double[_wellList.Count][];
 
-            double[][] coords = new[]
+            for (int i = 0; i < _wellList.Count; i++)
             {
-                new double[] { 10.0, 20.0 } ,
-                new double[] { 30.0, 40.0 } ,
-                new double[] { 50.0, 60.0 } ,
-            };
+                coords[i] = new double[] { _wellList[i].X, _wellList[i].Y };
+            }
+            GetWellsMinMax(
+                out double minX, out double minY,
+                out double maxX, out double maxY);
 
+            double xRange;
+            double yRange;
+            if (_wellList.Count == 1)
+            {
+                xRange = 10.0; 
+                yRange = 10.0;
+            }
+            else
+            {
+                xRange = Math.Abs(minX - maxX); 
+                yRange = Math.Abs(minY - maxY);
+            }
+
+            minX -= xRange / 4.0;
+            minY -= yRange / 4.0;
+            maxX += xRange / 4.0;
+            maxY += yRange / 4.0;
+
+            double[] x = Linspace(minX, maxX,_xCount);
+            double[] y = Linspace(minY, maxY, _yCount);
+            
             _pressures.Clear();
             for (int i = 0; i < times.Length; i++)
             {
@@ -407,6 +422,7 @@
                 double[,] pressure = calculator.ComputatePressureConst(x, y, time, coords);
                 _pressures.Add(pressure);
             }
+            
         }
 
         public static double[] Linspace(double start, double stop, int num)
@@ -443,7 +459,12 @@
 
         private void timesTrackBarControl_Scroll(object sender, EventArgs e)
         {
-
+            if (_pressures.Count == 0)
+            {
+                return;
+            }
+            int num = timesTrackBarControl.Value;
+            UpdateHeatMap(_pressures[num]);
         }
 
         private void stepNumericUpDown_ValueChanged(object sender, EventArgs e)

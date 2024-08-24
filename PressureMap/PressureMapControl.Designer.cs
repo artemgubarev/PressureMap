@@ -66,10 +66,6 @@
             this.pictureEdit3 = new DevExpress.XtraEditors.PictureEdit();
             this.pictureEdit2 = new DevExpress.XtraEditors.PictureEdit();
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
-            this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
-            this.injectionDataChartControl = new DevExpress.XtraCharts.ChartControl();
-            this.injectionDataGridControl = new DevExpress.XtraGrid.GridControl();
-            this.injectionDataGridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.stepNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -82,6 +78,9 @@
             this.pressureHeatmapControl = new DevExpress.XtraCharts.Heatmap.HeatmapControl();
             this.timesTrackBarControl = new DevExpress.XtraEditors.TrackBarControl();
             this.chartControl1 = new DevExpress.XtraCharts.ChartControl();
+            this.wellComboBox = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             ((System.ComponentModel.ISupportInitialize)(this.wellMapChartControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xTextEdit.Properties)).BeginInit();
@@ -116,10 +115,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
-            this.xtraTabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.injectionDataChartControl)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.injectionDataGridControl)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.injectionDataGridView)).BeginInit();
             this.xtraTabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
@@ -131,6 +126,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartControl1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wellComboBox.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
+            this.tablePanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // wellMapChartControl
@@ -168,7 +166,7 @@
             this.loadFromExcelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.loadFromExcelButton.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(213)))), ((int)(((byte)(255)))), ((int)(((byte)(222)))));
             this.loadFromExcelButton.Appearance.Options.UseBackColor = true;
-            this.loadFromExcelButton.Location = new System.Drawing.Point(228, 743);
+            this.loadFromExcelButton.Location = new System.Drawing.Point(222, 743);
             this.loadFromExcelButton.Name = "loadFromExcelButton";
             this.loadFromExcelButton.Size = new System.Drawing.Size(116, 23);
             this.loadFromExcelButton.TabIndex = 9;
@@ -178,20 +176,20 @@
             // xLabel
             // 
             this.xLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.xLabel.Location = new System.Drawing.Point(90, 776);
+            this.xLabel.Location = new System.Drawing.Point(111, 769);
             this.xLabel.Name = "xLabel";
-            this.xLabel.Size = new System.Drawing.Size(10, 13);
+            this.xLabel.Size = new System.Drawing.Size(6, 13);
             this.xLabel.TabIndex = 8;
-            this.xLabel.Text = "X:";
+            this.xLabel.Text = "X";
             // 
             // yLabel
             // 
             this.yLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.yLabel.Location = new System.Drawing.Point(90, 805);
+            this.yLabel.Location = new System.Drawing.Point(111, 795);
             this.yLabel.Name = "yLabel";
-            this.yLabel.Size = new System.Drawing.Size(10, 13);
+            this.yLabel.Size = new System.Drawing.Size(6, 13);
             this.yLabel.TabIndex = 7;
-            this.yLabel.Text = "Y:";
+            this.yLabel.Text = "Y";
             // 
             // deleteWellButton
             // 
@@ -207,7 +205,7 @@
             // yTextEdit
             // 
             this.yTextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.yTextEdit.Location = new System.Drawing.Point(106, 802);
+            this.yTextEdit.Location = new System.Drawing.Point(5, 792);
             this.yTextEdit.Name = "yTextEdit";
             this.yTextEdit.Size = new System.Drawing.Size(100, 20);
             this.yTextEdit.TabIndex = 6;
@@ -215,7 +213,7 @@
             // xTextEdit
             // 
             this.xTextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.xTextEdit.Location = new System.Drawing.Point(106, 769);
+            this.xTextEdit.Location = new System.Drawing.Point(5, 766);
             this.xTextEdit.Name = "xTextEdit";
             this.xTextEdit.Size = new System.Drawing.Size(100, 20);
             this.xTextEdit.TabIndex = 5;
@@ -260,7 +258,6 @@
             this.xtraTabControl1.TabIndex = 3;
             this.xtraTabControl1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.xtraTabPage1,
-            this.xtraTabPage2,
             this.xtraTabPage3});
             // 
             // xtraTabPage1
@@ -303,7 +300,7 @@
             // wellNumberTextEdit
             // 
             this.wellNumberTextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.wellNumberTextEdit.Location = new System.Drawing.Point(100, 740);
+            this.wellNumberTextEdit.Location = new System.Drawing.Point(5, 740);
             this.wellNumberTextEdit.Name = "wellNumberTextEdit";
             this.wellNumberTextEdit.Size = new System.Drawing.Size(100, 20);
             this.wellNumberTextEdit.TabIndex = 11;
@@ -311,11 +308,11 @@
             // labelControl3
             // 
             this.labelControl3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelControl3.Location = new System.Drawing.Point(5, 743);
+            this.labelControl3.Location = new System.Drawing.Point(111, 743);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(89, 13);
+            this.labelControl3.Size = new System.Drawing.Size(85, 13);
             this.labelControl3.TabIndex = 10;
-            this.labelControl3.Text = "Номер скважины:";
+            this.labelControl3.Text = "Номер скважины";
             // 
             // xtraTabPage6
             // 
@@ -636,58 +633,14 @@
             this.pictureEdit1.Size = new System.Drawing.Size(115, 24);
             this.pictureEdit1.TabIndex = 12;
             // 
-            // xtraTabPage2
-            // 
-            this.xtraTabPage2.Controls.Add(this.injectionDataChartControl);
-            this.xtraTabPage2.Controls.Add(this.injectionDataGridControl);
-            this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(1095, 894);
-            this.xtraTabPage2.Text = "Данные закачки";
-            // 
-            // injectionDataChartControl
-            // 
-            this.injectionDataChartControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.injectionDataChartControl.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
-            this.injectionDataChartControl.Location = new System.Drawing.Point(3, 3);
-            this.injectionDataChartControl.Name = "injectionDataChartControl";
-            this.injectionDataChartControl.SeriesSerializable = new DevExpress.XtraCharts.Series[0];
-            this.injectionDataChartControl.Size = new System.Drawing.Size(617, 754);
-            this.injectionDataChartControl.TabIndex = 6;
-            // 
-            // injectionDataGridControl
-            // 
-            this.injectionDataGridControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.injectionDataGridControl.Location = new System.Drawing.Point(626, 3);
-            this.injectionDataGridControl.MainView = this.injectionDataGridView;
-            this.injectionDataGridControl.Name = "injectionDataGridControl";
-            this.injectionDataGridControl.Size = new System.Drawing.Size(186, 754);
-            this.injectionDataGridControl.TabIndex = 5;
-            this.injectionDataGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.injectionDataGridView});
-            // 
-            // injectionDataGridView
-            // 
-            this.injectionDataGridView.Appearance.FocusedRow.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.injectionDataGridView.Appearance.FocusedRow.Options.UseBackColor = true;
-            this.injectionDataGridView.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
-            this.injectionDataGridView.GridControl = this.injectionDataGridControl;
-            this.injectionDataGridView.Name = "injectionDataGridView";
-            this.injectionDataGridView.OptionsBehavior.ReadOnly = true;
-            this.injectionDataGridView.OptionsCustomization.AllowSort = false;
-            this.injectionDataGridView.OptionsFilter.AllowFilterEditor = false;
-            this.injectionDataGridView.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.injectionDataGridView.OptionsView.ShowGroupPanel = false;
-            // 
             // xtraTabPage3
             // 
+            this.xtraTabPage3.Controls.Add(this.tablePanel1);
+            this.xtraTabPage3.Controls.Add(this.wellComboBox);
+            this.xtraTabPage3.Controls.Add(this.label1);
             this.xtraTabPage3.Controls.Add(this.groupControl1);
             this.xtraTabPage3.Controls.Add(this.runButton);
-            this.xtraTabPage3.Controls.Add(this.pressureHeatmapControl);
             this.xtraTabPage3.Controls.Add(this.timesTrackBarControl);
-            this.xtraTabPage3.Controls.Add(this.chartControl1);
             this.xtraTabPage3.Name = "xtraTabPage3";
             this.xtraTabPage3.Size = new System.Drawing.Size(1095, 894);
             this.xtraTabPage3.Text = "Карта давлений";
@@ -784,7 +737,7 @@
             // 
             this.runButton.AllowFocus = false;
             this.runButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.runButton.Location = new System.Drawing.Point(43, 780);
+            this.runButton.Location = new System.Drawing.Point(3, 769);
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(153, 35);
             this.runButton.TabIndex = 10;
@@ -797,10 +750,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pressureHeatmapControl.Border.Visibility = DevExpress.Utils.DefaultBoolean.False;
+            this.tablePanel1.SetColumn(this.pressureHeatmapControl, 1);
             this.pressureHeatmapControl.Legend.Visibility = DevExpress.Utils.DefaultBoolean.True;
-            this.pressureHeatmapControl.Location = new System.Drawing.Point(43, 8);
+            this.pressureHeatmapControl.Location = new System.Drawing.Point(473, 3);
             this.pressureHeatmapControl.Name = "pressureHeatmapControl";
-            this.pressureHeatmapControl.Size = new System.Drawing.Size(1033, 704);
+            this.tablePanel1.SetRow(this.pressureHeatmapControl, 0);
+            this.pressureHeatmapControl.Size = new System.Drawing.Size(598, 559);
             this.pressureHeatmapControl.TabIndex = 9;
             this.pressureHeatmapControl.Text = "heatmapControl1";
             // 
@@ -809,12 +764,12 @@
             this.timesTrackBarControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.timesTrackBarControl.EditValue = null;
-            this.timesTrackBarControl.Location = new System.Drawing.Point(43, 718);
+            this.timesTrackBarControl.Location = new System.Drawing.Point(3, 718);
             this.timesTrackBarControl.Name = "timesTrackBarControl";
             this.timesTrackBarControl.Properties.LabelAppearance.Options.UseTextOptions = true;
             this.timesTrackBarControl.Properties.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.timesTrackBarControl.Properties.ShowLabels = true;
-            this.timesTrackBarControl.Size = new System.Drawing.Size(1033, 45);
+            this.timesTrackBarControl.Size = new System.Drawing.Size(1089, 45);
             this.timesTrackBarControl.TabIndex = 8;
             this.timesTrackBarControl.Scroll += new System.EventHandler(this.timesTrackBarControl_Scroll);
             // 
@@ -823,12 +778,49 @@
             this.chartControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tablePanel1.SetColumn(this.chartControl1, 0);
             this.chartControl1.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
-            this.chartControl1.Location = new System.Drawing.Point(9, 8);
+            this.chartControl1.Location = new System.Drawing.Point(3, 3);
             this.chartControl1.Name = "chartControl1";
+            this.tablePanel1.SetRow(this.chartControl1, 0);
             this.chartControl1.SeriesSerializable = new DevExpress.XtraCharts.Series[0];
-            this.chartControl1.Size = new System.Drawing.Size(377, 211);
+            this.chartControl1.Size = new System.Drawing.Size(464, 559);
             this.chartControl1.TabIndex = 7;
+            // 
+            // wellComboBox
+            // 
+            this.wellComboBox.Location = new System.Drawing.Point(118, 59);
+            this.wellComboBox.Name = "wellComboBox";
+            this.wellComboBox.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.wellComboBox.Size = new System.Drawing.Size(181, 20);
+            this.wellComboBox.TabIndex = 12;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(16, 62);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(96, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Номер скважины:";
+            // 
+            // tablePanel1
+            // 
+            this.tablePanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 26.24F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 33.76F)});
+            this.tablePanel1.Controls.Add(this.chartControl1);
+            this.tablePanel1.Controls.Add(this.pressureHeatmapControl);
+            this.tablePanel1.Location = new System.Drawing.Point(19, 85);
+            this.tablePanel1.Name = "tablePanel1";
+            this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
+            this.tablePanel1.Size = new System.Drawing.Size(1074, 565);
+            this.tablePanel1.TabIndex = 14;
             // 
             // PressureMapControl
             // 
@@ -872,10 +864,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
-            this.xtraTabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.injectionDataChartControl)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.injectionDataGridControl)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.injectionDataGridView)).EndInit();
             this.xtraTabPage3.ResumeLayout(false);
             this.xtraTabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
@@ -889,6 +877,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartControl1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wellComboBox.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
+            this.tablePanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -907,10 +898,6 @@
         private DevExpress.XtraEditors.SimpleButton loadFromExcelButton;
         private DevExpress.XtraTab.XtraTabControl xtraTabControl1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
-        private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
-        private DevExpress.XtraGrid.GridControl injectionDataGridControl;
-        private DevExpress.XtraGrid.Views.Grid.GridView injectionDataGridView;
-        private DevExpress.XtraCharts.ChartControl injectionDataChartControl;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage3;
         private DevExpress.XtraEditors.TrackBarControl timesTrackBarControl;
         private DevExpress.XtraCharts.ChartControl chartControl1;
@@ -949,5 +936,8 @@
         private DevExpress.XtraEditors.DateEdit startDateEdit;
         private DevExpress.XtraEditors.DateEdit endDateEdit;
         private System.Windows.Forms.NumericUpDown stepNumericUpDown;
+        private System.Windows.Forms.Label label1;
+        private DevExpress.XtraEditors.ComboBoxEdit wellComboBox;
+        private DevExpress.Utils.Layout.TablePanel tablePanel1;
     }
 }
