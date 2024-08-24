@@ -2,16 +2,16 @@
 {
     using DevExpress.Utils;
     using DevExpress.XtraCharts;
+    using DevExpress.XtraCharts.Heatmap;
+    using DevExpress.XtraEditors.Repository;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Drawing;
     using System.Globalization;
+    using System.Linq;
     using System.Windows.Forms;
     using Excel = Microsoft.Office.Interop.Excel;
-    using System.Linq;
-    using DevExpress.ClipboardSource.SpreadsheetML;
-    using DevExpress.XtraCharts.Heatmap;
 
     public partial class PressureMapControl : DevExpress.XtraEditors.XtraUserControl
     {
@@ -19,7 +19,12 @@
         private DataTable _injectionDataTable;
         private Series _wellSeries;
         private Series _injectionSeries;
-       
+        private List<Well> _wellList;
+        private const int _xCount = 1000;
+        private const int _yCount = 1000;
+
+        private List<double[,]> _pressures;
+
         #region график расхода Test
         
         private Series _testSeries;
@@ -60,6 +65,10 @@
             InitializeInjectionChartControl();
             ChartInitTest();
             ChartUpdate(0);
+            UpdateTrackBar();
+
+            _wellList = new List<Well>();
+            _pressures = new List<double[,]>();
 
             AddNewInjectionData(new List<(double t, double Q)>()
             {
@@ -67,16 +76,32 @@
                 (1, 2),
                 (4, 3),
             });
-
-           
         }
 
-        public static double[] Linspace(double start, double stop, int num)
+        private void UpdateTrackBar()
         {
-            double step = (stop - start) / (num - 1);
-            return Enumerable.Range(0, num)
-                .Select(i => start + i * step)
-                .ToArray();
+            int days = GetDaysCount();
+            int step = (int)stepNumericUpDown.Value;
+
+            timesTrackBarControl.Properties.Minimum = 0;
+            timesTrackBarControl.Properties.Maximum = days;
+
+            var date = startDateEdit.DateTime;
+            timesTrackBarControl.Properties.Labels.Clear();
+            var labels = new TrackBarLabel[days / step + 1];
+            for (int i = 0; i <= days; i += step)
+            {
+                labels[i / step] = new TrackBarLabel(date.ToString("dd.MM.yyyy"), i);
+                date = date.AddDays(step);
+            }
+            timesTrackBarControl.Properties.Labels.AddRange(labels);
+        }
+
+        private int GetDaysCount()
+        {
+            var start = startDateEdit.DateTime;
+            var end = endDateEdit.DateTime;
+            return (end - start).Days;
         }
 
         private void InitializeInjectionDataTable()
@@ -90,6 +115,7 @@
         private void InitializeWellTable()
         {
             _wellsDataTable = new DataTable();
+            _wellsDataTable.Columns.Add("Номер");
             _wellsDataTable.Columns.Add("X");
             _wellsDataTable.Columns.Add("Y");
             wellGridControl.DataSource = _wellsDataTable;
@@ -166,15 +192,16 @@
             return true;
         }
 
-        private void AddNewWells(IEnumerable<(double X, double Y)> wells)
+        private void AddNewWells(IEnumerable<Well> wells)
         {
             foreach (var well in wells)
             {
-                _wellsDataTable.Rows.Add(new object[] { well.X, well.Y });
+                _wellsDataTable.Rows.Add(new object[] { well.Number, well.X, well.Y });
                 var point = new SeriesPoint(well.X, well.Y);
                 _wellSeries.Points.Add(point);
             }
             wellMapChartControl.RefreshData();
+            _wellList.AddRange(wells);
         }
 
         private void AddNewInjectionData(IEnumerable<(double t, double Q)> injectionData)
@@ -192,7 +219,8 @@
         {
             string xStr = xTextEdit.Text;
             string yStr = yTextEdit.Text;
-
+            string numStr = wellNumberTextEdit.Text;
+            
 
             bool isCorrect = IsDoubleValueValid(xStr, out double x);
             if (!IsDoubleValueValid(yStr, out double y))
@@ -200,13 +228,21 @@
                 isCorrect = false;
             }
 
+            if (!int.TryParse(numStr, NumberStyles.Any,
+                    CultureInfo.InvariantCulture, out int number))
+            {
+                isCorrect = false;
+            }
+
             if (!isCorrect)
             {
-                MessageBox.Show("Некорректные значения координат скважины");
+                MessageBox.Show("Некорректно указаны координаты скважины или её номер");
                 return;
             }
 
-            AddNewWells(new (double X, double Y)[] {(x,y)});
+            var well = new Well(number, x, y);
+
+            AddNewWells(new Well[] { well });
 
             xTextEdit.Text = string.Empty;
             yTextEdit.Text = string.Empty;
@@ -280,7 +316,7 @@
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
 
-                AddNewWells(coordinates);
+                //AddNewWells(coordinates);
 
                 // show errors
                 if (errorMessages.Count != 0)
@@ -294,8 +330,52 @@
                 }
             }
         }
+        
+        private void UpdateHeatMap(double[,] pressure, int xCount, int yCount)
+        {
+            var dataAdapter = new HeatmapMatrixAdapter();
+            dataAdapter.XArguments = GenerateAxisLabels(xCount);
+            dataAdapter.YArguments = GenerateAxisLabels(yCount);
+            dataAdapter.Values = pressure;
+            pressureHeatmapControl.DataAdapter = dataAdapter;
 
-        private void trackBarControl1_Scroll(object sender, EventArgs e)
+            var palette = new Palette("Custom") {
+                Color.Red,
+                Color.Orange,
+                Color.Yellow,
+                Color.Green,
+                Color.Cyan,
+                Color.Blue,
+                Color.DarkBlue,
+                Color.DarkMagenta
+            };
+
+            var colorProvider = new HeatmapRangeColorProvider
+            {
+                Palette = palette,
+                ApproximateColors = true,
+            };
+
+            for (double i = 0.0; i < 1.0; i+=0.125)
+            {
+                colorProvider.RangeStops.Add(
+                    new HeatmapRangeStop(i, HeatmapRangeStopType.Percentage));
+            }
+            
+            pressureHeatmapControl.ColorProvider = colorProvider;
+        }
+
+        private string[] GenerateAxisLabels(int count)
+        {
+            string[] labels = new string[count];
+            for (int i = 0; i < count; i++)
+            {
+                labels[i] = $"{i + 1}";
+            }
+            return labels;
+        }
+
+        private void runSimpleButton_Click(object sender, EventArgs e)
         {
             double p0 = (double)p0SpinEdit.Value;
             double mu = (double)muSpinEdit.Value;
@@ -306,13 +386,12 @@
             double ct = (double)ctSpinEdit.Value;
             double D = k / (mu * phi0 * ct);
 
-            var calc = new PressureCalculator(p0, mu, Q, k, H, D);
+            var calculator = new PressureCalculator(p0, mu, Q, k, H, D);
 
-            int xCount = 1000;
-            int yCount = 1000;
-
-            double[] x = Linspace(-5, 100, xCount);
-            double[] y = Linspace(-5, 100, yCount);
+            double[] times = GetTimes();
+            
+            double[] x = Linspace(-5, 100, _xCount);
+            double[] y = Linspace(-5, 100, _yCount);
 
             double[][] coords = new[]
             {
@@ -321,44 +400,65 @@
                 new double[] { 50.0, 60.0 } ,
             };
 
-            double t = (double)((DevExpress.XtraEditors.TrackBarControl)sender).Value;
-            double[,] pressure = calc.ComputatePressureConst(x, y, t, coords);
-
-            HeatmapMatrixAdapter dataAdapter = new HeatmapMatrixAdapter();
-            dataAdapter.XArguments = GenerateAxisLabels(xCount, "X");
-            dataAdapter.YArguments = GenerateAxisLabels(yCount, "Y");
-            dataAdapter.Values = pressure;
-            heatmapControl1.DataAdapter = dataAdapter;
-
-            Palette palette = new Palette("Custom") {
-                Color.White,
-                Color.SkyBlue,
-                Color.DarkBlue
-            };
-            
-            var colorProvider = new HeatmapRangeColorProvider
+            _pressures.Clear();
+            for (int i = 0; i < times.Length; i++)
             {
-                Palette = palette,
-                ApproximateColors = true
-            };
+                double time = times[i];
+                double[,] pressure = calculator.ComputatePressureConst(x, y, time, coords);
+                _pressures.Add(pressure);
+            }
+        }
 
-            colorProvider.RangeStops.Add(new HeatmapRangeStop(0, HeatmapRangeStopType.Percentage));
-            colorProvider.RangeStops.Add(new HeatmapRangeStop(50000000, HeatmapRangeStopType.Absolute));
-            colorProvider.RangeStops.Add(new HeatmapRangeStop(61000000, HeatmapRangeStopType.Absolute));
-            colorProvider.RangeStops.Add(new HeatmapRangeStop(1, HeatmapRangeStopType.Percentage));
+        public static double[] Linspace(double start, double stop, int num)
+        {
+            double step = (stop - start) / (num - 1);
+            return Enumerable.Range(0, num)
+                .Select(i => start + i * step)
+                .ToArray();
+        }
 
-            heatmapControl1.ColorProvider = colorProvider;
+        private void GetWellsMinMax(
+            out double minX, out double minY, 
+            out double maxX, out double maxY)
+        {
+            minX = _wellList.Min(w => w.X);
+            minY = _wellList.Min(w => w.Y);
+            maxX = _wellList.Max(w => w.X);
+            maxY = _wellList.Max(w => w.Y);
+        }
+
+        private double[] GetTimes()
+        {
+            int days = GetDaysCount();
+            int step = (int)stepNumericUpDown.Value;
+            days /= step;
+            double secondsInDay = 86400.0;
+            double[] times = new double[days + 1];
+            for (int i = 0; i <= days; i++)
+            {
+                times[i] = (secondsInDay * i);
+            }
+            return times;
+        }
+
+        private void timesTrackBarControl_Scroll(object sender, EventArgs e)
+        {
 
         }
 
-        private string[] GenerateAxisLabels(int count, string prefix)
+        private void stepNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            string[] labels = new string[count];
-            for (int i = 0; i < count; i++)
-            {
-                labels[i] = $"{prefix}{i + 1}";
-            }
-            return labels;
+            UpdateTrackBar();
+        }
+
+        private void endDateEdit_EditValueChanged(object sender, EventArgs e)
+        {
+            UpdateTrackBar();
+        }
+
+        private void startDateEdit_EditValueChanged(object sender, EventArgs e)
+        {
+            UpdateTrackBar();
         }
     }
 }

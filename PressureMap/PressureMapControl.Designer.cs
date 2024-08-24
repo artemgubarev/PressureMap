@@ -42,6 +42,8 @@
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             this.xtraTabControl2 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage5 = new DevExpress.XtraTab.XtraTabPage();
+            this.wellNumberTextEdit = new DevExpress.XtraEditors.TextEdit();
+            this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.xtraTabPage6 = new DevExpress.XtraTab.XtraTabPage();
             this.qSpinEdit = new DevExpress.XtraEditors.SpinEdit();
             this.pictureEdit14 = new DevExpress.XtraEditors.PictureEdit();
@@ -69,8 +71,16 @@
             this.injectionDataGridControl = new DevExpress.XtraGrid.GridControl();
             this.injectionDataGridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
-            this.heatmapControl1 = new DevExpress.XtraCharts.Heatmap.HeatmapControl();
-            this.trackBarControl1 = new DevExpress.XtraEditors.TrackBarControl();
+            this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            this.stepNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.endDateEdit = new DevExpress.XtraEditors.DateEdit();
+            this.startDateEdit = new DevExpress.XtraEditors.DateEdit();
+            this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
+            this.runButton = new DevExpress.XtraEditors.SimpleButton();
+            this.pressureHeatmapControl = new DevExpress.XtraCharts.Heatmap.HeatmapControl();
+            this.timesTrackBarControl = new DevExpress.XtraEditors.TrackBarControl();
             this.chartControl1 = new DevExpress.XtraCharts.ChartControl();
             ((System.ComponentModel.ISupportInitialize)(this.wellMapChartControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yTextEdit.Properties)).BeginInit();
@@ -83,6 +93,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl2)).BeginInit();
             this.xtraTabControl2.SuspendLayout();
             this.xtraTabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.wellNumberTextEdit.Properties)).BeginInit();
             this.xtraTabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.qSpinEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit14.Properties)).BeginInit();
@@ -110,8 +121,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.injectionDataGridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.injectionDataGridView)).BeginInit();
             this.xtraTabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarControl1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarControl1.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
+            this.groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.stepNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.endDateEdit.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.endDateEdit.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.startDateEdit.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.startDateEdit.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartControl1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -150,7 +168,7 @@
             this.loadFromExcelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.loadFromExcelButton.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(213)))), ((int)(((byte)(255)))), ((int)(((byte)(222)))));
             this.loadFromExcelButton.Appearance.Options.UseBackColor = true;
-            this.loadFromExcelButton.Location = new System.Drawing.Point(224, 772);
+            this.loadFromExcelButton.Location = new System.Drawing.Point(228, 743);
             this.loadFromExcelButton.Name = "loadFromExcelButton";
             this.loadFromExcelButton.Size = new System.Drawing.Size(116, 23);
             this.loadFromExcelButton.TabIndex = 9;
@@ -160,7 +178,7 @@
             // xLabel
             // 
             this.xLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.xLabel.Location = new System.Drawing.Point(5, 775);
+            this.xLabel.Location = new System.Drawing.Point(90, 776);
             this.xLabel.Name = "xLabel";
             this.xLabel.Size = new System.Drawing.Size(10, 13);
             this.xLabel.TabIndex = 8;
@@ -169,7 +187,7 @@
             // yLabel
             // 
             this.yLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.yLabel.Location = new System.Drawing.Point(5, 805);
+            this.yLabel.Location = new System.Drawing.Point(90, 805);
             this.yLabel.Name = "yLabel";
             this.yLabel.Size = new System.Drawing.Size(10, 13);
             this.yLabel.TabIndex = 7;
@@ -189,7 +207,7 @@
             // yTextEdit
             // 
             this.yTextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.yTextEdit.Location = new System.Drawing.Point(21, 802);
+            this.yTextEdit.Location = new System.Drawing.Point(106, 802);
             this.yTextEdit.Name = "yTextEdit";
             this.yTextEdit.Size = new System.Drawing.Size(100, 20);
             this.yTextEdit.TabIndex = 6;
@@ -197,7 +215,7 @@
             // xTextEdit
             // 
             this.xTextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.xTextEdit.Location = new System.Drawing.Point(21, 772);
+            this.xTextEdit.Location = new System.Drawing.Point(106, 769);
             this.xTextEdit.Name = "xTextEdit";
             this.xTextEdit.Size = new System.Drawing.Size(100, 20);
             this.xTextEdit.TabIndex = 5;
@@ -210,7 +228,7 @@
             this.wellGridControl.Location = new System.Drawing.Point(3, 3);
             this.wellGridControl.MainView = this.wellGridView;
             this.wellGridControl.Name = "wellGridControl";
-            this.wellGridControl.Size = new System.Drawing.Size(341, 763);
+            this.wellGridControl.Size = new System.Drawing.Size(341, 734);
             this.wellGridControl.TabIndex = 4;
             this.wellGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.wellGridView});
@@ -268,6 +286,8 @@
             // 
             // xtraTabPage5
             // 
+            this.xtraTabPage5.Controls.Add(this.wellNumberTextEdit);
+            this.xtraTabPage5.Controls.Add(this.labelControl3);
             this.xtraTabPage5.Controls.Add(this.loadFromExcelButton);
             this.xtraTabPage5.Controls.Add(this.xLabel);
             this.xtraTabPage5.Controls.Add(this.wellGridControl);
@@ -279,6 +299,23 @@
             this.xtraTabPage5.Name = "xtraTabPage5";
             this.xtraTabPage5.Size = new System.Drawing.Size(347, 856);
             this.xtraTabPage5.Text = "Скважины";
+            // 
+            // wellNumberTextEdit
+            // 
+            this.wellNumberTextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.wellNumberTextEdit.Location = new System.Drawing.Point(100, 740);
+            this.wellNumberTextEdit.Name = "wellNumberTextEdit";
+            this.wellNumberTextEdit.Size = new System.Drawing.Size(100, 20);
+            this.wellNumberTextEdit.TabIndex = 11;
+            // 
+            // labelControl3
+            // 
+            this.labelControl3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelControl3.Location = new System.Drawing.Point(5, 743);
+            this.labelControl3.Name = "labelControl3";
+            this.labelControl3.Size = new System.Drawing.Size(89, 13);
+            this.labelControl3.TabIndex = 10;
+            this.labelControl3.Text = "Номер скважины:";
             // 
             // xtraTabPage6
             // 
@@ -646,35 +683,140 @@
             // 
             // xtraTabPage3
             // 
-            this.xtraTabPage3.Controls.Add(this.heatmapControl1);
-            this.xtraTabPage3.Controls.Add(this.trackBarControl1);
+            this.xtraTabPage3.Controls.Add(this.groupControl1);
+            this.xtraTabPage3.Controls.Add(this.runButton);
+            this.xtraTabPage3.Controls.Add(this.pressureHeatmapControl);
+            this.xtraTabPage3.Controls.Add(this.timesTrackBarControl);
             this.xtraTabPage3.Controls.Add(this.chartControl1);
             this.xtraTabPage3.Name = "xtraTabPage3";
             this.xtraTabPage3.Size = new System.Drawing.Size(1095, 894);
             this.xtraTabPage3.Text = "Карта давлений";
             // 
-            // heatmapControl1
+            // groupControl1
             // 
-            this.heatmapControl1.Border.Visibility = DevExpress.Utils.DefaultBoolean.False;
-            this.heatmapControl1.Legend.Visibility = DevExpress.Utils.DefaultBoolean.True;
-            this.heatmapControl1.Location = new System.Drawing.Point(43, 8);
-            this.heatmapControl1.Name = "heatmapControl1";
-            this.heatmapControl1.Size = new System.Drawing.Size(1030, 817);
-            this.heatmapControl1.TabIndex = 9;
-            this.heatmapControl1.Text = "heatmapControl1";
+            this.groupControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupControl1.Controls.Add(this.stepNumericUpDown);
+            this.groupControl1.Controls.Add(this.endDateEdit);
+            this.groupControl1.Controls.Add(this.startDateEdit);
+            this.groupControl1.Controls.Add(this.labelControl4);
+            this.groupControl1.Controls.Add(this.labelControl1);
+            this.groupControl1.Controls.Add(this.labelControl2);
+            this.groupControl1.Location = new System.Drawing.Point(834, 769);
+            this.groupControl1.Name = "groupControl1";
+            this.groupControl1.Size = new System.Drawing.Size(242, 122);
+            this.groupControl1.TabIndex = 11;
+            this.groupControl1.Text = "Шкала времени";
             // 
-            // trackBarControl1
+            // stepNumericUpDown
             // 
-            this.trackBarControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.stepNumericUpDown.Location = new System.Drawing.Point(130, 93);
+            this.stepNumericUpDown.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this.stepNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.stepNumericUpDown.Name = "stepNumericUpDown";
+            this.stepNumericUpDown.Size = new System.Drawing.Size(98, 21);
+            this.stepNumericUpDown.TabIndex = 18;
+            this.stepNumericUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.stepNumericUpDown.ValueChanged += new System.EventHandler(this.stepNumericUpDown_ValueChanged);
+            // 
+            // endDateEdit
+            // 
+            this.endDateEdit.EditValue = new System.DateTime(2030, 12, 31, 0, 0, 0, 0);
+            this.endDateEdit.Location = new System.Drawing.Point(130, 58);
+            this.endDateEdit.Name = "endDateEdit";
+            this.endDateEdit.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.endDateEdit.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.endDateEdit.Size = new System.Drawing.Size(100, 20);
+            this.endDateEdit.TabIndex = 17;
+            this.endDateEdit.EditValueChanged += new System.EventHandler(this.endDateEdit_EditValueChanged);
+            // 
+            // startDateEdit
+            // 
+            this.startDateEdit.EditValue = new System.DateTime(2000, 1, 1, 0, 0, 0, 0);
+            this.startDateEdit.Location = new System.Drawing.Point(130, 30);
+            this.startDateEdit.Name = "startDateEdit";
+            this.startDateEdit.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.startDateEdit.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.startDateEdit.Size = new System.Drawing.Size(100, 20);
+            this.startDateEdit.TabIndex = 16;
+            this.startDateEdit.EditValueChanged += new System.EventHandler(this.startDateEdit_EditValueChanged);
+            // 
+            // labelControl4
+            // 
+            this.labelControl4.Location = new System.Drawing.Point(5, 95);
+            this.labelControl4.Name = "labelControl4";
+            this.labelControl4.Size = new System.Drawing.Size(121, 13);
+            this.labelControl4.TabIndex = 15;
+            this.labelControl4.Text = "Шаг по времени (дней):";
+            // 
+            // labelControl1
+            // 
+            this.labelControl1.Location = new System.Drawing.Point(5, 33);
+            this.labelControl1.Name = "labelControl1";
+            this.labelControl1.Size = new System.Drawing.Size(123, 13);
+            this.labelControl1.TabIndex = 12;
+            this.labelControl1.Text = "Начало моделирования:";
+            // 
+            // labelControl2
+            // 
+            this.labelControl2.Location = new System.Drawing.Point(5, 65);
+            this.labelControl2.Name = "labelControl2";
+            this.labelControl2.Size = new System.Drawing.Size(117, 13);
+            this.labelControl2.TabIndex = 13;
+            this.labelControl2.Text = "Конец моделирования:";
+            // 
+            // runButton
+            // 
+            this.runButton.AllowFocus = false;
+            this.runButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.runButton.Location = new System.Drawing.Point(43, 780);
+            this.runButton.Name = "runButton";
+            this.runButton.Size = new System.Drawing.Size(153, 35);
+            this.runButton.TabIndex = 10;
+            this.runButton.Text = "Расчитать давление";
+            this.runButton.Click += new System.EventHandler(this.runSimpleButton_Click);
+            // 
+            // pressureHeatmapControl
+            // 
+            this.pressureHeatmapControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBarControl1.EditValue = null;
-            this.trackBarControl1.Location = new System.Drawing.Point(9, 846);
-            this.trackBarControl1.Name = "trackBarControl1";
-            this.trackBarControl1.Properties.LabelAppearance.Options.UseTextOptions = true;
-            this.trackBarControl1.Properties.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.trackBarControl1.Size = new System.Drawing.Size(651, 45);
-            this.trackBarControl1.TabIndex = 8;
-            this.trackBarControl1.Scroll += new System.EventHandler(this.trackBarControl1_Scroll);
+            this.pressureHeatmapControl.Border.Visibility = DevExpress.Utils.DefaultBoolean.False;
+            this.pressureHeatmapControl.Legend.Visibility = DevExpress.Utils.DefaultBoolean.True;
+            this.pressureHeatmapControl.Location = new System.Drawing.Point(43, 8);
+            this.pressureHeatmapControl.Name = "pressureHeatmapControl";
+            this.pressureHeatmapControl.Size = new System.Drawing.Size(1033, 704);
+            this.pressureHeatmapControl.TabIndex = 9;
+            this.pressureHeatmapControl.Text = "heatmapControl1";
+            // 
+            // timesTrackBarControl
+            // 
+            this.timesTrackBarControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.timesTrackBarControl.EditValue = null;
+            this.timesTrackBarControl.Location = new System.Drawing.Point(43, 718);
+            this.timesTrackBarControl.Name = "timesTrackBarControl";
+            this.timesTrackBarControl.Properties.LabelAppearance.Options.UseTextOptions = true;
+            this.timesTrackBarControl.Properties.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.timesTrackBarControl.Properties.ShowLabels = true;
+            this.timesTrackBarControl.Size = new System.Drawing.Size(1033, 45);
+            this.timesTrackBarControl.TabIndex = 8;
+            this.timesTrackBarControl.Scroll += new System.EventHandler(this.timesTrackBarControl_Scroll);
             // 
             // chartControl1
             // 
@@ -707,6 +849,7 @@
             this.xtraTabControl2.ResumeLayout(false);
             this.xtraTabPage5.ResumeLayout(false);
             this.xtraTabPage5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.wellNumberTextEdit.Properties)).EndInit();
             this.xtraTabPage6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.qSpinEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit14.Properties)).EndInit();
@@ -735,8 +878,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.injectionDataGridView)).EndInit();
             this.xtraTabPage3.ResumeLayout(false);
             this.xtraTabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarControl1.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarControl1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
+            this.groupControl1.ResumeLayout(false);
+            this.groupControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.stepNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.endDateEdit.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.endDateEdit.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.startDateEdit.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.startDateEdit.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartControl1)).EndInit();
             this.ResumeLayout(false);
 
@@ -761,7 +912,7 @@
         private DevExpress.XtraGrid.Views.Grid.GridView injectionDataGridView;
         private DevExpress.XtraCharts.ChartControl injectionDataChartControl;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage3;
-        private DevExpress.XtraEditors.TrackBarControl trackBarControl1;
+        private DevExpress.XtraEditors.TrackBarControl timesTrackBarControl;
         private DevExpress.XtraCharts.ChartControl chartControl1;
         private DevExpress.XtraTab.XtraTabControl xtraTabControl2;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage5;
@@ -787,6 +938,16 @@
         private DevExpress.XtraEditors.PictureEdit pictureEdit13;
         private DevExpress.XtraEditors.SpinEdit qSpinEdit;
         private DevExpress.XtraEditors.PictureEdit pictureEdit14;
-        private DevExpress.XtraCharts.Heatmap.HeatmapControl heatmapControl1;
+        private DevExpress.XtraCharts.Heatmap.HeatmapControl pressureHeatmapControl;
+        private DevExpress.XtraEditors.SimpleButton runButton;
+        private DevExpress.XtraEditors.GroupControl groupControl1;
+        private DevExpress.XtraEditors.LabelControl labelControl1;
+        private DevExpress.XtraEditors.LabelControl labelControl2;
+        private DevExpress.XtraEditors.TextEdit wellNumberTextEdit;
+        private DevExpress.XtraEditors.LabelControl labelControl3;
+        private DevExpress.XtraEditors.LabelControl labelControl4;
+        private DevExpress.XtraEditors.DateEdit startDateEdit;
+        private DevExpress.XtraEditors.DateEdit endDateEdit;
+        private System.Windows.Forms.NumericUpDown stepNumericUpDown;
     }
 }
