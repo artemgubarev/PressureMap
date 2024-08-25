@@ -67,10 +67,11 @@
             this.pictureEdit2 = new DevExpress.XtraEditors.PictureEdit();
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
             this.xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
+            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            this.currentTimeTextEdit = new DevExpress.XtraEditors.TextEdit();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
-            this.pressureHeatmapControl = new DevExpress.XtraCharts.Heatmap.HeatmapControl();
             this.chartControl1 = new DevExpress.XtraCharts.ChartControl();
-            this.wellComboBox = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.pressureHeatmapControl = new DevExpress.XtraCharts.Heatmap.HeatmapControl();
             this.label1 = new System.Windows.Forms.Label();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
             this.stepNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -81,8 +82,7 @@
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.runButton = new DevExpress.XtraEditors.SimpleButton();
             this.timesTrackBarControl = new DevExpress.XtraEditors.TrackBarControl();
-            this.currentTimeTextEdit = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            this.wellComboBox = new DevExpress.XtraEditors.ComboBoxEdit();
             ((System.ComponentModel.ISupportInitialize)(this.wellMapChartControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xTextEdit.Properties)).BeginInit();
@@ -118,10 +118,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
             this.xtraTabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.currentTimeTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartControl1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.wellComboBox.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.stepNumericUpDown)).BeginInit();
@@ -131,7 +131,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.startDateEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.currentTimeTextEdit.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wellComboBox.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // wellMapChartControl
@@ -638,10 +638,10 @@
             // 
             // xtraTabPage3
             // 
+            this.xtraTabPage3.Controls.Add(this.wellComboBox);
             this.xtraTabPage3.Controls.Add(this.labelControl5);
             this.xtraTabPage3.Controls.Add(this.currentTimeTextEdit);
             this.xtraTabPage3.Controls.Add(this.tablePanel1);
-            this.xtraTabPage3.Controls.Add(this.wellComboBox);
             this.xtraTabPage3.Controls.Add(this.label1);
             this.xtraTabPage3.Controls.Add(this.groupControl1);
             this.xtraTabPage3.Controls.Add(this.runButton);
@@ -649,6 +649,25 @@
             this.xtraTabPage3.Name = "xtraTabPage3";
             this.xtraTabPage3.Size = new System.Drawing.Size(1095, 894);
             this.xtraTabPage3.Text = "Карта давлений";
+            // 
+            // labelControl5
+            // 
+            this.labelControl5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelControl5.Location = new System.Drawing.Point(17, 637);
+            this.labelControl5.Name = "labelControl5";
+            this.labelControl5.Size = new System.Drawing.Size(144, 13);
+            this.labelControl5.TabIndex = 16;
+            this.labelControl5.Text = "Текущее значение времени:";
+            // 
+            // currentTimeTextEdit
+            // 
+            this.currentTimeTextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.currentTimeTextEdit.Enabled = false;
+            this.currentTimeTextEdit.Location = new System.Drawing.Point(167, 634);
+            this.currentTimeTextEdit.Name = "currentTimeTextEdit";
+            this.currentTimeTextEdit.Properties.ReadOnly = true;
+            this.currentTimeTextEdit.Size = new System.Drawing.Size(100, 20);
+            this.currentTimeTextEdit.TabIndex = 15;
             // 
             // tablePanel1
             // 
@@ -667,21 +686,6 @@
             this.tablePanel1.Size = new System.Drawing.Size(1074, 565);
             this.tablePanel1.TabIndex = 14;
             // 
-            // pressureHeatmapControl
-            // 
-            this.pressureHeatmapControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pressureHeatmapControl.Border.Visibility = DevExpress.Utils.DefaultBoolean.False;
-            this.tablePanel1.SetColumn(this.pressureHeatmapControl, 1);
-            this.pressureHeatmapControl.Legend.Visibility = DevExpress.Utils.DefaultBoolean.True;
-            this.pressureHeatmapControl.Location = new System.Drawing.Point(473, 3);
-            this.pressureHeatmapControl.Name = "pressureHeatmapControl";
-            this.tablePanel1.SetRow(this.pressureHeatmapControl, 0);
-            this.pressureHeatmapControl.Size = new System.Drawing.Size(598, 559);
-            this.pressureHeatmapControl.TabIndex = 9;
-            this.pressureHeatmapControl.Text = "heatmapControl1";
-            // 
             // chartControl1
             // 
             this.chartControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -696,14 +700,20 @@
             this.chartControl1.Size = new System.Drawing.Size(464, 559);
             this.chartControl1.TabIndex = 7;
             // 
-            // wellComboBox
+            // pressureHeatmapControl
             // 
-            this.wellComboBox.Location = new System.Drawing.Point(116, 12);
-            this.wellComboBox.Name = "wellComboBox";
-            this.wellComboBox.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.wellComboBox.Size = new System.Drawing.Size(181, 20);
-            this.wellComboBox.TabIndex = 12;
+            this.pressureHeatmapControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pressureHeatmapControl.Border.Visibility = DevExpress.Utils.DefaultBoolean.False;
+            this.tablePanel1.SetColumn(this.pressureHeatmapControl, 1);
+            this.pressureHeatmapControl.Legend.Visibility = DevExpress.Utils.DefaultBoolean.True;
+            this.pressureHeatmapControl.Location = new System.Drawing.Point(473, 3);
+            this.pressureHeatmapControl.Name = "pressureHeatmapControl";
+            this.tablePanel1.SetRow(this.pressureHeatmapControl, 0);
+            this.pressureHeatmapControl.Size = new System.Drawing.Size(598, 559);
+            this.pressureHeatmapControl.TabIndex = 9;
+            this.pressureHeatmapControl.Text = "heatmapControl1";
             // 
             // label1
             // 
@@ -827,24 +837,17 @@
             this.timesTrackBarControl.TabIndex = 8;
             this.timesTrackBarControl.Scroll += new System.EventHandler(this.timesTrackBarControl_Scroll);
             // 
-            // currentTimeTextEdit
+            // wellComboBox
             // 
-            this.currentTimeTextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.currentTimeTextEdit.Enabled = false;
-            this.currentTimeTextEdit.Location = new System.Drawing.Point(167, 634);
-            this.currentTimeTextEdit.Name = "currentTimeTextEdit";
-            this.currentTimeTextEdit.Properties.ReadOnly = true;
-            this.currentTimeTextEdit.Size = new System.Drawing.Size(100, 20);
-            this.currentTimeTextEdit.TabIndex = 15;
-            // 
-            // labelControl5
-            // 
-            this.labelControl5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelControl5.Location = new System.Drawing.Point(17, 637);
-            this.labelControl5.Name = "labelControl5";
-            this.labelControl5.Size = new System.Drawing.Size(144, 13);
-            this.labelControl5.TabIndex = 16;
-            this.labelControl5.Text = "Текущее значение времени:";
+            this.wellComboBox.Location = new System.Drawing.Point(116, 12);
+            this.wellComboBox.Name = "wellComboBox";
+            this.wellComboBox.Properties.AllowFocused = false;
+            this.wellComboBox.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.wellComboBox.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.wellComboBox.Size = new System.Drawing.Size(208, 20);
+            this.wellComboBox.TabIndex = 17;
+            this.wellComboBox.SelectedIndexChanged += new System.EventHandler(this.wellComboBox_SelectedIndexChanged);
             // 
             // PressureMapControl
             // 
@@ -890,10 +893,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
             this.xtraTabPage3.ResumeLayout(false);
             this.xtraTabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.currentTimeTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chartControl1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.wellComboBox.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
             this.groupControl1.PerformLayout();
@@ -904,7 +907,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.startDateEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.currentTimeTextEdit.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.wellComboBox.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -962,9 +965,9 @@
         private DevExpress.XtraEditors.DateEdit endDateEdit;
         private System.Windows.Forms.NumericUpDown stepNumericUpDown;
         private System.Windows.Forms.Label label1;
-        private DevExpress.XtraEditors.ComboBoxEdit wellComboBox;
         private DevExpress.Utils.Layout.TablePanel tablePanel1;
         private DevExpress.XtraEditors.LabelControl labelControl5;
         private DevExpress.XtraEditors.TextEdit currentTimeTextEdit;
+        private DevExpress.XtraEditors.ComboBoxEdit wellComboBox;
     }
 }

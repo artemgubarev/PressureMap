@@ -1,8 +1,11 @@
 ﻿namespace PressureMap
 {
+    using DevExpress.ClipboardSource.SpreadsheetML;
+    using DevExpress.Office.Utils;
     using DevExpress.Utils;
     using DevExpress.XtraCharts;
     using DevExpress.XtraCharts.Heatmap;
+    using DevExpress.XtraEditors;
     using DevExpress.XtraEditors.Repository;
     using System;
     using System.Collections.Generic;
@@ -20,48 +23,16 @@
         private Series _wellSeries;
         private Series _injectionSeries;
         private List<Well> _wellList;
-        private const int _xCount = 1000;
-        private const int _yCount = 1000;
+        private const int _xCount = 100;
+        private const int _yCount = 100;
         private List<double[,]> _pressures;
-
-        #region график расхода Test
         
-        private Series _testSeries;
-
-        private void ChartInitTest()
-        {
-            _testSeries = new Series("Данные", ViewType.Line);
-            _testSeries.View.Color = Color.Black;
-            chartControl1.Series.Add(_testSeries);
-        }
-
-        private void ChartUpdate(double n)
-        {
-            int num = 100;
-            var data = new (double x, double y)[num];
-
-            for (int i = 0; i < num; i++)
-            {
-                data[i].x = i;
-                data[i].y = Math.Pow(i, n);
-            }
-
-            _testSeries.Points.Clear();
-            foreach (var value in data)
-            {
-                _testSeries.Points.Add(new SeriesPoint(value.x, value.y));
-            }
-        }
-
-        #endregion
 
         public PressureMapControl()
         {
             InitializeComponent();
             InitializeWellTable();
             InitializeWellChartControl();
-            ChartInitTest();
-            ChartUpdate(0);
             UpdateTrackBar();
 
             _wellList = new List<Well>();
@@ -69,6 +40,7 @@
 
             wellMapChartControl.ToolTipController = new ToolTipController();
             wellMapChartControl.ToolTipController.ShowBeak = true;
+
         }
 
         private void UpdateTrackBar()
@@ -149,10 +121,13 @@
             var focusedRowHandle = wellGridView.FocusedRowHandle;
             if (focusedRowHandle >= 0)
             {
+                var well = _wellList[focusedRowHandle];
                 var dataTable = (DataTable)wellGridControl.DataSource;
                 dataTable.Rows.RemoveAt(focusedRowHandle);
                 _wellSeries.Points.RemoveAt(focusedRowHandle);
+                _wellList.RemoveAt(focusedRowHandle);
                 wellMapChartControl.RefreshData();
+                wellComboBox.Properties.Items.Remove(well.Number);
             }
         }
 
@@ -171,15 +146,20 @@
 
         private void AddNewWells(IEnumerable<Well> wells)
         {
+            _wellList.AddRange(wells);
             foreach (var well in wells)
             {
                 _wellsDataTable.Rows.Add(new object[] { well.Number, well.X, well.Y });
                 var point = new SeriesPoint(well.X, well.Y);
                 point.Tag = well.Number;
                 _wellSeries.Points.Add(point);
+                wellComboBox.Properties.Items.Add(well.Number);
+                if (wellComboBox.Properties.Items.Count == 1)
+                {
+                    wellComboBox.SelectedIndex = 0;
+                }
             }
             wellMapChartControl.RefreshData();
-            _wellList.AddRange(wells);
         }
         
         private void addWellButton_Click(object sender, System.EventArgs e)
@@ -188,7 +168,6 @@
             string yStr = yTextEdit.Text;
             string numStr = wellNumberTextEdit.Text;
             
-
             bool isCorrect = IsDoubleValueValid(xStr, out double x);
             if (!IsDoubleValueValid(yStr, out double y))
             {
@@ -240,6 +219,8 @@
             openFileDialog.Filter = "Excel files (*.xlsx;*.xls)|*.xlsx;*.xls";
             var xCoords = new List<(int Num, double X)>();
             var yCoords = new List<(int Num, double Y)>();
+            var dateTimes = new List<DateTime>();
+            var fluidFlows = new List<(int Num, double[] Values)>();
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -249,12 +230,15 @@
                 
                 Excel.Worksheet worksheetX = workbook.Sheets[3];
                 Excel.Worksheet worksheetY = workbook.Sheets[4];
+                Excel.Worksheet worksheetQ = workbook.Sheets[1];
                 
                 int numRow = 1; 
                 int valueRow = 2;
 
-                ParseSheetData(worksheetX, numRow, valueRow, xCoords);
-                ParseSheetData(worksheetY, numRow, valueRow, yCoords);
+                ParseWellCoords(worksheetX, numRow, valueRow, xCoords);
+                ParseWellCoords(worksheetY, numRow, valueRow, yCoords);
+                ReadDateTimeFromWorksheet(worksheetQ, dateTimes);
+                ReadExcelValues(worksheetQ, fluidFlows);
 
                 var combined = from x in xCoords  
                                join y in yCoords on x.Num equals y.Num
@@ -263,7 +247,11 @@
                 var wells = new List<Well>();
                 foreach (var value in combined)
                 {
-                    wells.Add(new Well(value.Num, value.X, value.Y));
+                    var qValues = 
+                        fluidFlows.FirstOrDefault(item => item.Num == value.Num);
+                    var dateAndQValues =
+                        CombineArrays(dateTimes.ToArray(), qValues.Values);
+                    wells.Add(new Well(value.Num, value.X, value.Y, dateAndQValues));
                 }
                 AddNewWells(wells);
 
@@ -276,7 +264,80 @@
             }
         }
 
-        private void ParseSheetData(Excel.Worksheet worksheet, int numRow, int valueRow,
+        private (DateTime Date, double Q)[] CombineArrays(DateTime[] dates, double[] values)
+        {
+            if (dates.Length != values.Length)
+            {
+                throw new ArgumentException("Arrays must have the same length.");
+            }
+            var combinedArray = dates.Zip(values, (date, value) 
+                => (Date: date, Q: value)).ToArray();
+            return combinedArray;
+        }
+
+        private void ReadExcelValues(
+            Excel.Worksheet worksheet, List<(int Num, double[] Values)> dataList)
+        {
+            int lastRow = worksheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell).Row;
+            int lastCol = worksheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell).Column;
+            
+            var excelApp = (Excel.Application)worksheet.Application;
+            bool originalScreenUpdating = excelApp.ScreenUpdating;
+            bool originalCalculation = excelApp.Calculation == Excel.XlCalculation.xlCalculationAutomatic;
+
+            excelApp.ScreenUpdating = false;
+            excelApp.Calculation = Excel.XlCalculation.xlCalculationManual;
+
+            try
+            {
+                var range = worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[lastRow, lastCol]];
+                object[,] values = (object[,])range.Value2;
+                
+                for (int col = 2; col <= lastCol; col++)
+                {
+                    var num = values[1, col];
+                    if (num != null)
+                    {
+                        int numValue = Convert.ToInt32(num);
+
+                        List<double> valuesList = new List<double>();
+                        
+                        for (int row = 2; row <= lastRow; row++)
+                        {
+                            var cellValue = values[row, col];
+                            if (cellValue != null)
+                            {
+                                valuesList.Add(Convert.ToDouble(cellValue));
+                            }
+                        }
+                        dataList.Add((numValue, valuesList.ToArray()));
+                    }
+                }
+            }
+            finally
+            {
+                excelApp.ScreenUpdating = originalScreenUpdating;
+                excelApp.Calculation = originalCalculation ? Excel.XlCalculation.xlCalculationAutomatic : Excel.XlCalculation.xlCalculationManual;
+            }
+        }
+
+        private void ReadDateTimeFromWorksheet(
+            Excel.Worksheet worksheet, List<DateTime> dateTimeValues)
+        {
+            int row = 2;
+            object cellValue;
+
+            // Assuming dateTimeValues is already declared and initialized
+            while ((cellValue = worksheet.Cells[row++, 1].Value) != null)
+            {
+                if (DateTime.TryParse(cellValue.ToString(), out DateTime dateValue))
+                {
+                    dateTimeValues.Add(dateValue);
+                }
+            }
+        }
+
+        private void ParseWellCoords(Excel.Worksheet worksheet, int numRow, int valueRow,
             List<(int Number, double Value)> coordsList)
         {
             for (int col = 1; col <= worksheet.UsedRange.Columns.Count; col++)
@@ -487,6 +548,47 @@
         private void startDateEdit_EditValueChanged(object sender, EventArgs e)
         {
             UpdateTrackBar();
+        }
+
+        private void wellComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int selectedIndex = wellComboBox.SelectedIndex;
+            if (selectedIndex >= 0)
+            {
+                string selectedValue = wellComboBox.Properties.Items[selectedIndex].ToString();
+                int number = int.Parse(selectedValue);
+                DrawQ(number);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        private void DrawQ(int wellNumber)
+        {
+            var well = _wellList.FirstOrDefault(w => w.Number == wellNumber);
+            if (well.Q == null)
+            {
+                return;
+            }
+            Series series = new Series("Series1", ViewType.Line);
+            
+            foreach (var point in well.Q)
+            {
+                series.Points.Add(new SeriesPoint(point.Date, point.value));
+            }
+
+            var diagram = new XYDiagram();
+            diagram.AxisX.DateTimeScaleOptions.MeasureUnit = DateTimeMeasureUnit.Month;
+            diagram.AxisX.DateTimeScaleOptions.GridAlignment = DateTimeGridAlignment.Month;
+            diagram.AxisX.Label.TextPattern = "{A:MMM yyyy}";
+
+            chartControl1.BeginInit();
+            chartControl1.Diagram = diagram;
+            chartControl1.Series.Clear();
+            chartControl1.Series.Add(series);
+            chartControl1.EndInit();
         }
     }
 }
