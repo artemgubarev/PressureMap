@@ -92,6 +92,8 @@
            
             timesTrackBarControl.Properties.TickFrequency = 1;
             timesTrackBarControl.Properties.Labels.AddRange(labels);
+            int num = timesTrackBarControl.Value;
+            currentTimeTextEdit.Text = labels[num].Label;
         }
 
         private int GetDaysCount()
@@ -459,11 +461,16 @@
 
         private void timesTrackBarControl_Scroll(object sender, EventArgs e)
         {
+            int num = timesTrackBarControl.Value;
+            int step = (int)stepNumericUpDown.Value;
+            var days = num * step;
+            var start = startDateEdit.DateTime;
+            var date = start.AddDays(days);
+            currentTimeTextEdit.Text = date.ToString("dd.MM.yyyy");
             if (_pressures.Count == 0)
             {
                 return;
             }
-            int num = timesTrackBarControl.Value;
             UpdateHeatMap(_pressures[num]);
         }
 
