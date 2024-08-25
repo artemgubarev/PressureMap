@@ -6,16 +6,16 @@
     {
         private double _p0;
         private double _mu;
-        private double _Q;
+       // private double _Q;
         private double _k;
         private double _H;
         private double _D;
 
-        public PressureCalculator(double p0, double mu, double Q, double k, double H, double D)
+        public PressureCalculator(double p0, double mu, double k, double H, double D)
         {
             this._p0 = p0;
             this._mu = mu;
-            this._Q = Q;
+            //this._Q = Q;
             this._k = k;
             this._H = H;
             this._D = D;
@@ -24,44 +24,69 @@
         // вычислить давление в точке (x,y) в момент времени t
         private double p(double x, double y, double t)
         {
-            return _p0 + ((_mu * _Q) / (4 * Math.PI * _k * _H)) * 
-                SpecialFunctions.ExponentialIntegral(-(x * x + y * y) / (4 * _D * t));
+            double expression1 = _mu / (4 * Math.PI * _k * _H);
+            double expression2 = -(x * x + y * y) / (4 * _D * t);
+            if (expression2 > 300)
+            {
+                expression2 = 300;
+            }
+            double expression3 = SpecialFunctions.ExponentialIntegral(expression2);
+            double result = expression1 * expression3;
+            
+            return result;
         }
 
         internal double[,] ComputatePressure(double[] x, double[] y,double t, 
-            double[][] coords, double x0 = 0, double y0 = 0)
+            double[][] coords, (double t, double Q)[][] tQs, double x0 = 0, double y0 = 0)
         {
-            int rows = y.Length;
-            int cols = x.Length;
-            double[,] P = new double[rows, cols];
 
-            if (coords == null || coords.Length == 0)
+            double[,] X = new double[x.Length, y.Length];
+            double[,] Y = new double[x.Length, y.Length];
+            double[,] P = new double[x.Length, y.Length];
+
+            for (int i = 0; i < x.Length; i++)
             {
-                for (int i = 0; i < rows; i++)
+                for (int j = 0; j < y.Length; j++)
                 {
-                    for (int j = 0; j < cols; j++)
-                    {
-                        P[i, j] = p(x[j] - x0, y[i] - y0, t);
-                    }
+                    X[i, j] = x[i];
+                    Y[i, j] = y[j];
                 }
             }
-            else
+
+            for (int k = 0; k < coords.Length; k++)
             {
-                for (int i = 0; i < rows; i++)
+                for (int i = 0; i < tQs[k].Length - 1; i++)
                 {
-                    for (int j = 0; j < cols; j++)
+                    for (int m = 0; m < x.Length; m++)
                     {
-                        P[i, j] = 0;
-                        foreach (double[] coord in coords)
+                        for (int n = 0; n < y.Length; n++)
                         {
-                            double cx = coord[0];
-                            double cy = coord[1];
-                            double pressure = p(x[j] - cx, y[i] - cy, t);
-                            P[i, j] += pressure;
+                            double q = (tQs[k][i + 1].Q - tQs[k][i].Q);
+                            double _p = p(X[m, n] - coords[k][0], Y[m, n] - coords[k][1], t - tQs[k][i].t);
+                            double value = q * _p;
+                            P[m, n] += value;
                         }
                     }
                 }
+
+                for (int m = 0; m < x.Length; m++)
+                {
+                    for (int n = 0; n < y.Length; n++)
+                    {
+                        double value = tQs[k][0].Q * p(X[m, n] - coords[k][0], Y[m, n] - coords[k][1], t);
+                        P[m, n] += value;
+                    }
+                }
             }
+
+            for (int m = 0; m < x.Length; m++)
+            {
+                for (int n = 0; n < y.Length; n++)
+                {
+                    P[m, n] += _p0;
+                }
+            }
+
             return P;
         }
         

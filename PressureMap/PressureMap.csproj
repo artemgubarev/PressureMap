@@ -138,6 +138,7 @@
     <Content Include="resources\ct.png" />
     <Content Include="resources\equal.png" />
     <Content Include="resources\h.png" />
+    <Content Include="resources\icon.png" />
     <Content Include="resources\k.PNG" />
     <Content Include="resources\mu.PNG" />
     <Content Include="resources\p0.png" />

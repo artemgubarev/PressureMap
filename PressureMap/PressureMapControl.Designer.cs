@@ -45,9 +45,6 @@
             this.wellNumberTextEdit = new DevExpress.XtraEditors.TextEdit();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.xtraTabPage6 = new DevExpress.XtraTab.XtraTabPage();
-            this.qSpinEdit = new DevExpress.XtraEditors.SpinEdit();
-            this.pictureEdit14 = new DevExpress.XtraEditors.PictureEdit();
-            this.pictureEdit13 = new DevExpress.XtraEditors.PictureEdit();
             this.p0SpinEdit = new DevExpress.XtraEditors.SpinEdit();
             this.muSpinEdit = new DevExpress.XtraEditors.SpinEdit();
             this.ctSpinEdit = new DevExpress.XtraEditors.SpinEdit();
@@ -96,9 +93,6 @@
             this.xtraTabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.wellNumberTextEdit.Properties)).BeginInit();
             this.xtraTabPage6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.qSpinEdit.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit14.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit13.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.p0SpinEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.muSpinEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ctSpinEdit.Properties)).BeginInit();
@@ -319,9 +313,6 @@
             // 
             // xtraTabPage6
             // 
-            this.xtraTabPage6.Controls.Add(this.qSpinEdit);
-            this.xtraTabPage6.Controls.Add(this.pictureEdit14);
-            this.xtraTabPage6.Controls.Add(this.pictureEdit13);
             this.xtraTabPage6.Controls.Add(this.p0SpinEdit);
             this.xtraTabPage6.Controls.Add(this.muSpinEdit);
             this.xtraTabPage6.Controls.Add(this.ctSpinEdit);
@@ -343,48 +334,6 @@
             this.xtraTabPage6.Name = "xtraTabPage6";
             this.xtraTabPage6.Size = new System.Drawing.Size(347, 856);
             this.xtraTabPage6.Text = "Данные пласта";
-            // 
-            // qSpinEdit
-            // 
-            this.qSpinEdit.EditValue = new decimal(new int[] {
-            5,
-            0,
-            0,
-            262144});
-            this.qSpinEdit.Location = new System.Drawing.Point(204, 272);
-            this.qSpinEdit.Name = "qSpinEdit";
-            this.qSpinEdit.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.qSpinEdit.Size = new System.Drawing.Size(140, 20);
-            this.qSpinEdit.TabIndex = 43;
-            // 
-            // pictureEdit14
-            // 
-            this.pictureEdit14.EditValue = global::PressureMap.Properties.Resources.equal;
-            this.pictureEdit14.Location = new System.Drawing.Point(190, 275);
-            this.pictureEdit14.Name = "pictureEdit14";
-            this.pictureEdit14.Properties.AllowFocused = false;
-            this.pictureEdit14.Properties.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.pictureEdit14.Properties.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.pictureEdit14.Properties.Appearance.Options.UseBackColor = true;
-            this.pictureEdit14.Properties.Appearance.Options.UseBorderColor = true;
-            this.pictureEdit14.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.pictureEdit14.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit14.Size = new System.Drawing.Size(14, 17);
-            this.pictureEdit14.TabIndex = 42;
-            // 
-            // pictureEdit13
-            // 
-            this.pictureEdit13.EditValue = global::PressureMap.Properties.Resources.q;
-            this.pictureEdit13.Location = new System.Drawing.Point(3, 273);
-            this.pictureEdit13.Name = "pictureEdit13";
-            this.pictureEdit13.Properties.AllowFocused = false;
-            this.pictureEdit13.Properties.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.pictureEdit13.Properties.Appearance.Options.UseBackColor = true;
-            this.pictureEdit13.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.pictureEdit13.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit13.Size = new System.Drawing.Size(148, 19);
-            this.pictureEdit13.TabIndex = 41;
             // 
             // p0SpinEdit
             // 
@@ -719,7 +668,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pressureHeatmapControl.Border.Visibility = DevExpress.Utils.DefaultBoolean.False;
             this.tablePanel1.SetColumn(this.pressureHeatmapControl, 1);
-            this.pressureHeatmapControl.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
+            this.pressureHeatmapControl.Legend.FillStyle.FillMode = DevExpress.XtraCharts.FillMode.Gradient;
             this.pressureHeatmapControl.Location = new System.Drawing.Point(468, 6);
             this.pressureHeatmapControl.Name = "pressureHeatmapControl";
             this.tablePanel1.SetRow(this.pressureHeatmapControl, 0);
@@ -870,9 +819,6 @@
             this.xtraTabPage5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.wellNumberTextEdit.Properties)).EndInit();
             this.xtraTabPage6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.qSpinEdit.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit14.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit13.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.p0SpinEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.muSpinEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ctSpinEdit.Properties)).EndInit();
@@ -950,9 +896,6 @@
         private DevExpress.XtraEditors.PictureEdit pictureEdit9;
         private DevExpress.XtraEditors.PictureEdit pictureEdit8;
         private DevExpress.XtraEditors.PictureEdit pictureEdit7;
-        private DevExpress.XtraEditors.PictureEdit pictureEdit13;
-        private DevExpress.XtraEditors.SpinEdit qSpinEdit;
-        private DevExpress.XtraEditors.PictureEdit pictureEdit14;
         private DevExpress.XtraCharts.Heatmap.HeatmapControl pressureHeatmapControl;
         private DevExpress.XtraEditors.SimpleButton runButton;
         private DevExpress.XtraEditors.GroupControl groupControl1;

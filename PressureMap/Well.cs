@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DevExpress.ClipboardSource.SpreadsheetML;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PressureMap
 {
@@ -49,6 +51,31 @@ namespace PressureMap
                 filledData.Add(value[value.Length - 1]);
                 _q = filledData.ToArray();
             }
+        }
+
+        public (double t, double Q)[] GetTQs(DateTime start, DateTime end, int step)
+        {
+            double seconds = 0;
+            var tQs = new List<(double t, double Q)>();
+            if (Q == null)
+            {
+                return null; 
+            }
+            while (start < end)
+            {
+                var time = Q.FirstOrDefault(tuple => tuple.Date == start);
+                if (start == time.Date)
+                {
+                    tQs.Add(new (seconds, time.value));
+                }
+                else
+                {
+                    tQs.Add(new(seconds, 0));
+                }
+                start = start.AddDays(step);
+                seconds+=86400;
+            }
+            return tQs.ToArray();
         }
     }
 }

@@ -37,8 +37,6 @@
 
             wellMapChartControl.ToolTipController = new ToolTipController();
             wellMapChartControl.ToolTipController.ShowBeak = true;
-
-           
         }
 
         private void UpdateTrackBar()
@@ -64,6 +62,8 @@
             timesTrackBarControl.Properties.Labels.AddRange(labels);
             int num = timesTrackBarControl.Value;
             currentTimeTextEdit.Text = labels[num].Label;
+
+            DrawRedLine(startDateEdit.DateTime.AddDays(timesTrackBarControl.Value));
         }
 
         private int GetDaysCount()
@@ -96,12 +96,14 @@
             diagram.EnableAxisXZooming = true;
             diagram.EnableAxisYScrolling = true;
             diagram.EnableAxisYZooming = true;
-            
+
+            diagram.AxisX.Title.Text = "Время T";
             diagram.AxisX.GridLines.Visible = true;
             diagram.AxisX.GridLines.MinorVisible = false;
             diagram.AxisX.GridLines.Color = Color.DimGray;
             diagram.AxisX.GridLines.LineStyle.DashStyle = DashStyle.Dash;
-            
+
+            diagram.AxisY.Title.Text = "Расход жидкости Q";
             diagram.AxisY.GridLines.Visible = true;
             diagram.AxisY.GridLines.MinorVisible = false;
             diagram.AxisY.GridLines.Color = Color.DimGray;
@@ -214,6 +216,7 @@
         private void loadFromExcelButton_Click(object sender, System.EventArgs e)
         {
             var openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = @"C:\Users\gubarev.av\Desktop\технохак_testdata";
             openFileDialog.Filter = "Excel files (*.xlsx;*.xls)|*.xlsx;*.xls";
             var xCoords = new List<(int Num, double X)>();
             var yCoords = new List<(int Num, double Y)>();
@@ -391,23 +394,22 @@
             {
                 var palette = new Palette("Custom Gradient",
                     new PaletteEntry[] {
-                        new PaletteEntry(Color.FromArgb(255, 0, 0)),   // Red (красный)
+                        new PaletteEntry(Color.FromArgb(255, 0, 0)),   
                         new PaletteEntry(Color.FromArgb(255, 50, 0)),
                         new PaletteEntry(Color.FromArgb(255, 100, 0)),
                         new PaletteEntry(Color.FromArgb(255, 127, 0)),
                         new PaletteEntry(Color.FromArgb(255, 191, 0)),
-                        new PaletteEntry(Color.FromArgb(255, 255, 0)), // Yellow
+                        new PaletteEntry(Color.FromArgb(255, 255, 0)), 
                         new PaletteEntry(Color.FromArgb(191, 255, 0)),
                         new PaletteEntry(Color.FromArgb(127, 255, 0)),
-                        new PaletteEntry(Color.FromArgb(0, 255, 0)),   // Green
+                        new PaletteEntry(Color.FromArgb(0, 255, 0)),   
                         new PaletteEntry(Color.FromArgb(0, 255, 127)),
                         new PaletteEntry(Color.FromArgb(0, 255, 255)),
                         new PaletteEntry(Color.FromArgb(0, 191, 255)),
                         new PaletteEntry(Color.FromArgb(0, 100, 255)),
                         new PaletteEntry(Color.FromArgb(0, 0, 255)),
+                        new PaletteEntry(Color.FromArgb(128, 0, 128)),
                         new PaletteEntry(Color.FromArgb(75, 0, 130)),
-                        new PaletteEntry(Color.FromArgb(139, 0, 255)),
-                        new PaletteEntry(Color.FromArgb(128, 0, 128)), // Dark Purple (темно-фиолетовый)
                     });
 
                 var colorProvider = new HeatmapRangeColorProvider
@@ -424,8 +426,6 @@
                 }
                 
                 pressureHeatmapControl.ColorProvider = colorProvider;
-
-                //pressureHeatmapControl.PaletteRepository.Add("RainbowPalette", palette);
             }
         }
         
@@ -449,21 +449,27 @@
 
             double p0 = (double)p0SpinEdit.Value;
             double mu = (double)muSpinEdit.Value;
-            double Q = (double)qSpinEdit.Value;
+           // double Q = (double)qSpinEdit.Value;
             double k = (double)kSpinEdit.Value;
             double H = (double)hSpinEdit.Value;
             double phi0 = (double)phi0SpinEdit.Value;
             double ct = (double)ctSpinEdit.Value;
             double D = k / (mu * phi0 * ct);
 
-            var calculator = new PressureCalculator(p0, mu, Q, k, H, D);
+            var calculator = new PressureCalculator(p0, mu, k, H, D);
 
             double[] times = GetTimes();
             double[][] coords = new double[_wellList.Count][];
+            (double t, double Q)[][] tQs = new (double t, double Q)[_wellList.Count][];
+            
+            int step = (int)stepNumericUpDown.Value;
+            var start = startDateEdit.DateTime;
+            var end = endDateEdit.DateTime;
 
             for (int i = 0; i < _wellList.Count; i++)
             {
                 coords[i] = new double[] { _wellList[i].X, _wellList[i].Y };
+                tQs[i] = _wellList[i].GetTQs(start, end, step);
             }
             GetWellsMinMax(
                 out double minX, out double minY,
@@ -476,10 +482,11 @@
             for (int i = 0; i < times.Length; i++)
             {
                 double time = times[i];
-                double[,] pressure = calculator.ComputatePressure(x, y, time, coords);
+                double[,] pressure = calculator.ComputatePressure(x, y, time, coords, tQs);
                 _pressures.Add(pressure);
             }
-            
+
+            MessageBox.Show("Расчет выполнен");
         }
 
         public static double[] Linspace(double start, double stop, int num)
@@ -509,7 +516,7 @@
             double[] times = new double[days + 1];
             for (int i = 0; i <= days; i++)
             {
-                times[i] = (secondsInDay * i);
+                times[i] = (secondsInDay * i) + 1000000;
             }
             return times;
         }
@@ -522,6 +529,7 @@
             var start = startDateEdit.DateTime;
             var date = start.AddDays(days);
             currentTimeTextEdit.Text = date.ToString("dd.MM.yyyy");
+            DrawRedLine(date);
             if (_pressures.Count == 0)
             {
                 return;
@@ -552,6 +560,7 @@
                 string selectedValue = wellComboBox.Properties.Items[selectedIndex].ToString();
                 int number = int.Parse(selectedValue);
                 DrawQ(number);
+                DrawRedLine(startDateEdit.DateTime.AddDays(timesTrackBarControl.Value));
             }
             else
             {
@@ -584,6 +593,28 @@
             chartControl1.Series.Clear();
             chartControl1.Series.Add(series);
             chartControl1.EndInit();
+        }
+
+        private void DrawRedLine(DateTime specifiedDate)
+        {
+            DateTime minDate = startDateEdit.DateTime;
+            DateTime maxDate = endDateEdit.DateTime;
+            
+            if (specifiedDate >= minDate && specifiedDate <= maxDate)
+            {
+                ConstantLine constantLine = new ConstantLine();
+                constantLine.AxisValue = specifiedDate;
+                constantLine.LineStyle.Thickness = 2;
+                constantLine.Color = Color.Red;
+                chartControl1.BeginInit();
+                if ((XYDiagram)chartControl1.Diagram == null)
+                {
+                    return;
+                }
+                ((XYDiagram)chartControl1.Diagram).AxisX.ConstantLines.Clear();
+                ((XYDiagram)chartControl1.Diagram).AxisX.ConstantLines.Add(constantLine);
+                chartControl1.EndInit();
+            }
         }
     }
 }
