@@ -469,24 +469,6 @@
                 out double minX, out double minY,
                 out double maxX, out double maxY);
 
-            double xRange;
-            double yRange;
-            if (_wellList.Count == 1)
-            {
-                xRange = 10.0; 
-                yRange = 10.0;
-            }
-            else
-            {
-                xRange = Math.Abs(minX - maxX); 
-                yRange = Math.Abs(minY - maxY);
-            }
-
-            minX -= xRange / 4.0;
-            minY -= yRange / 4.0;
-            maxX += xRange / 4.0;
-            maxY += yRange / 4.0;
-
             double[] x = Linspace(minX, maxX,_xCount);
             double[] y = Linspace(minY, maxY, _yCount);
             
