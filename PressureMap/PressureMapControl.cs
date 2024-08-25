@@ -1,11 +1,8 @@
 ﻿namespace PressureMap
 {
-    using DevExpress.ClipboardSource.SpreadsheetML;
-    using DevExpress.Office.Utils;
     using DevExpress.Utils;
     using DevExpress.XtraCharts;
     using DevExpress.XtraCharts.Heatmap;
-    using DevExpress.XtraEditors;
     using DevExpress.XtraEditors.Repository;
     using System;
     using System.Collections.Generic;
@@ -23,8 +20,8 @@
         private Series _wellSeries;
         private Series _injectionSeries;
         private List<Well> _wellList;
-        private const int _xCount = 100;
-        private const int _yCount = 100;
+        private const int _xCount = 500;
+        private const int _yCount = 500;
         private List<double[,]> _pressures;
         
 
@@ -41,6 +38,7 @@
             wellMapChartControl.ToolTipController = new ToolTipController();
             wellMapChartControl.ToolTipController.ShowBeak = true;
 
+           
         }
 
         private void UpdateTrackBar()
@@ -391,16 +389,26 @@
             }
             else
             {
-                var palette = new Palette("Custom") {
-                    Color.Red,
-                    Color.Orange,
-                    Color.Yellow,
-                    Color.Green,
-                    Color.Cyan,
-                    Color.Blue,
-                    Color.DarkBlue,
-                    Color.DarkMagenta,
-                };
+                var palette = new Palette("Custom Gradient",
+                    new PaletteEntry[] {
+                        new PaletteEntry(Color.FromArgb(255, 0, 0)),   // Red (красный)
+                        new PaletteEntry(Color.FromArgb(255, 50, 0)),
+                        new PaletteEntry(Color.FromArgb(255, 100, 0)),
+                        new PaletteEntry(Color.FromArgb(255, 127, 0)),
+                        new PaletteEntry(Color.FromArgb(255, 191, 0)),
+                        new PaletteEntry(Color.FromArgb(255, 255, 0)), // Yellow
+                        new PaletteEntry(Color.FromArgb(191, 255, 0)),
+                        new PaletteEntry(Color.FromArgb(127, 255, 0)),
+                        new PaletteEntry(Color.FromArgb(0, 255, 0)),   // Green
+                        new PaletteEntry(Color.FromArgb(0, 255, 127)),
+                        new PaletteEntry(Color.FromArgb(0, 255, 255)),
+                        new PaletteEntry(Color.FromArgb(0, 191, 255)),
+                        new PaletteEntry(Color.FromArgb(0, 100, 255)),
+                        new PaletteEntry(Color.FromArgb(0, 0, 255)),
+                        new PaletteEntry(Color.FromArgb(75, 0, 130)),
+                        new PaletteEntry(Color.FromArgb(139, 0, 255)),
+                        new PaletteEntry(Color.FromArgb(128, 0, 128)), // Dark Purple (темно-фиолетовый)
+                    });
 
                 var colorProvider = new HeatmapRangeColorProvider
                 {
@@ -408,16 +416,20 @@
                     ApproximateColors = true,
                 };
 
-                for (double i = 0.0; i <= 1.0; i += 0.125)
+                double increment = 1.0 / palette.Count;
+                for (double i = 0.0; i <= 1.0; i += increment)
                 {
                     colorProvider.RangeStops.Add(
                         new HeatmapRangeStop(i, HeatmapRangeStopType.Percentage));
                 }
-
+                
                 pressureHeatmapControl.ColorProvider = colorProvider;
+
+                //pressureHeatmapControl.PaletteRepository.Add("RainbowPalette", palette);
             }
         }
         
+
         private string[] GenerateAxisLabels(int count)
         {
             string[] labels = new string[count];
@@ -482,7 +494,7 @@
             for (int i = 0; i < times.Length; i++)
             {
                 double time = times[i];
-                double[,] pressure = calculator.ComputatePressureConst(x, y, time, coords);
+                double[,] pressure = calculator.ComputatePressure(x, y, time, coords);
                 _pressures.Add(pressure);
             }
             
@@ -572,16 +584,17 @@
             {
                 return;
             }
-            Series series = new Series("Series1", ViewType.Line);
-            
+            Series series = new Series("Series1", ViewType.StepLine);
+
             foreach (var point in well.Q)
             {
                 series.Points.Add(new SeriesPoint(point.Date, point.value));
+                series.Points.Add(new SeriesPoint(point.Date.AddDays(1), point.value));
             }
 
             var diagram = new XYDiagram();
-            diagram.AxisX.DateTimeScaleOptions.MeasureUnit = DateTimeMeasureUnit.Month;
-            diagram.AxisX.DateTimeScaleOptions.GridAlignment = DateTimeGridAlignment.Month;
+            diagram.AxisX.DateTimeScaleOptions.MeasureUnit = DateTimeMeasureUnit.Day;
+            diagram.AxisX.DateTimeScaleOptions.GridAlignment = DateTimeGridAlignment.Day;
             diagram.AxisX.Label.TextPattern = "{A:MMM yyyy}";
 
             chartControl1.BeginInit();

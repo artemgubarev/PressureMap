@@ -28,7 +28,7 @@
                 SpecialFunctions.ExponentialIntegral(-(x * x + y * y) / (4 * _D * t));
         }
 
-        internal double[,] ComputatePressureConst(double[] x, double[] y,double t, 
+        internal double[,] ComputatePressure(double[] x, double[] y,double t, 
             double[][] coords, double x0 = 0, double y0 = 0)
         {
             int rows = y.Length;

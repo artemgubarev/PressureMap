@@ -67,6 +67,7 @@
             this.pictureEdit2 = new DevExpress.XtraEditors.PictureEdit();
             this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
             this.xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
+            this.wellComboBox = new DevExpress.XtraEditors.ComboBoxEdit();
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             this.currentTimeTextEdit = new DevExpress.XtraEditors.TextEdit();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
@@ -82,7 +83,6 @@
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.runButton = new DevExpress.XtraEditors.SimpleButton();
             this.timesTrackBarControl = new DevExpress.XtraEditors.TrackBarControl();
-            this.wellComboBox = new DevExpress.XtraEditors.ComboBoxEdit();
             ((System.ComponentModel.ISupportInitialize)(this.wellMapChartControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xTextEdit.Properties)).BeginInit();
@@ -118,6 +118,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
             this.xtraTabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.wellComboBox.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.currentTimeTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
@@ -131,7 +132,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.startDateEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.wellComboBox.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // wellMapChartControl
@@ -650,10 +650,22 @@
             this.xtraTabPage3.Size = new System.Drawing.Size(1095, 894);
             this.xtraTabPage3.Text = "Карта давлений";
             // 
+            // wellComboBox
+            // 
+            this.wellComboBox.Location = new System.Drawing.Point(116, 12);
+            this.wellComboBox.Name = "wellComboBox";
+            this.wellComboBox.Properties.AllowFocused = false;
+            this.wellComboBox.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.wellComboBox.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.wellComboBox.Size = new System.Drawing.Size(208, 20);
+            this.wellComboBox.TabIndex = 17;
+            this.wellComboBox.SelectedIndexChanged += new System.EventHandler(this.wellComboBox_SelectedIndexChanged);
+            // 
             // labelControl5
             // 
             this.labelControl5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelControl5.Location = new System.Drawing.Point(17, 637);
+            this.labelControl5.Location = new System.Drawing.Point(27, 688);
             this.labelControl5.Name = "labelControl5";
             this.labelControl5.Size = new System.Drawing.Size(144, 13);
             this.labelControl5.TabIndex = 16;
@@ -663,7 +675,7 @@
             // 
             this.currentTimeTextEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.currentTimeTextEdit.Enabled = false;
-            this.currentTimeTextEdit.Location = new System.Drawing.Point(167, 634);
+            this.currentTimeTextEdit.Location = new System.Drawing.Point(177, 685);
             this.currentTimeTextEdit.Name = "currentTimeTextEdit";
             this.currentTimeTextEdit.Properties.ReadOnly = true;
             this.currentTimeTextEdit.Size = new System.Drawing.Size(100, 20);
@@ -679,11 +691,11 @@
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 33.76F)});
             this.tablePanel1.Controls.Add(this.chartControl1);
             this.tablePanel1.Controls.Add(this.pressureHeatmapControl);
-            this.tablePanel1.Location = new System.Drawing.Point(17, 38);
+            this.tablePanel1.Location = new System.Drawing.Point(27, 38);
             this.tablePanel1.Name = "tablePanel1";
             this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(1074, 565);
+            this.tablePanel1.Size = new System.Drawing.Size(1064, 644);
             this.tablePanel1.TabIndex = 14;
             // 
             // chartControl1
@@ -697,7 +709,7 @@
             this.chartControl1.Name = "chartControl1";
             this.tablePanel1.SetRow(this.chartControl1, 0);
             this.chartControl1.SeriesSerializable = new DevExpress.XtraCharts.Series[0];
-            this.chartControl1.Size = new System.Drawing.Size(464, 559);
+            this.chartControl1.Size = new System.Drawing.Size(459, 638);
             this.chartControl1.TabIndex = 7;
             // 
             // pressureHeatmapControl
@@ -707,11 +719,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pressureHeatmapControl.Border.Visibility = DevExpress.Utils.DefaultBoolean.False;
             this.tablePanel1.SetColumn(this.pressureHeatmapControl, 1);
-            this.pressureHeatmapControl.Legend.Visibility = DevExpress.Utils.DefaultBoolean.True;
-            this.pressureHeatmapControl.Location = new System.Drawing.Point(473, 3);
+            this.pressureHeatmapControl.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
+            this.pressureHeatmapControl.Location = new System.Drawing.Point(468, 6);
             this.pressureHeatmapControl.Name = "pressureHeatmapControl";
             this.tablePanel1.SetRow(this.pressureHeatmapControl, 0);
-            this.pressureHeatmapControl.Size = new System.Drawing.Size(598, 559);
+            this.pressureHeatmapControl.Size = new System.Drawing.Size(593, 632);
             this.pressureHeatmapControl.TabIndex = 9;
             this.pressureHeatmapControl.Text = "heatmapControl1";
             // 
@@ -733,7 +745,7 @@
             this.groupControl1.Controls.Add(this.labelControl4);
             this.groupControl1.Controls.Add(this.labelControl1);
             this.groupControl1.Controls.Add(this.labelControl2);
-            this.groupControl1.Location = new System.Drawing.Point(839, 719);
+            this.groupControl1.Location = new System.Drawing.Point(846, 769);
             this.groupControl1.Name = "groupControl1";
             this.groupControl1.Size = new System.Drawing.Size(242, 122);
             this.groupControl1.TabIndex = 11;
@@ -816,7 +828,7 @@
             // 
             this.runButton.AllowFocus = false;
             this.runButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.runButton.Location = new System.Drawing.Point(8, 719);
+            this.runButton.Location = new System.Drawing.Point(30, 780);
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(153, 35);
             this.runButton.TabIndex = 10;
@@ -828,7 +840,7 @@
             this.timesTrackBarControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.timesTrackBarControl.EditValue = null;
-            this.timesTrackBarControl.Location = new System.Drawing.Point(8, 668);
+            this.timesTrackBarControl.Location = new System.Drawing.Point(27, 718);
             this.timesTrackBarControl.Name = "timesTrackBarControl";
             this.timesTrackBarControl.Properties.LabelAppearance.Options.UseTextOptions = true;
             this.timesTrackBarControl.Properties.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -836,18 +848,6 @@
             this.timesTrackBarControl.Size = new System.Drawing.Size(1061, 45);
             this.timesTrackBarControl.TabIndex = 8;
             this.timesTrackBarControl.Scroll += new System.EventHandler(this.timesTrackBarControl_Scroll);
-            // 
-            // wellComboBox
-            // 
-            this.wellComboBox.Location = new System.Drawing.Point(116, 12);
-            this.wellComboBox.Name = "wellComboBox";
-            this.wellComboBox.Properties.AllowFocused = false;
-            this.wellComboBox.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.wellComboBox.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.wellComboBox.Size = new System.Drawing.Size(208, 20);
-            this.wellComboBox.TabIndex = 17;
-            this.wellComboBox.SelectedIndexChanged += new System.EventHandler(this.wellComboBox_SelectedIndexChanged);
             // 
             // PressureMapControl
             // 
@@ -893,6 +893,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
             this.xtraTabPage3.ResumeLayout(false);
             this.xtraTabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.wellComboBox.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.currentTimeTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
@@ -907,7 +908,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.startDateEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.timesTrackBarControl)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.wellComboBox.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }

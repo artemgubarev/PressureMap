@@ -91,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GradientColor.cs" />
     <Compile Include="PressureCalculator.cs" />
     <Compile Include="PressureMapControl.cs">
       <SubType>UserControl</SubType>
