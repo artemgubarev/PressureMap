@@ -24,26 +24,31 @@
         // вычислить давление в точке (x,y) в момент времени t
         private double p(double x, double y, double t)
         {
-            double expression1 = _mu / (4 * Math.PI * _k * _H);
-            double expression2 = -(x * x + y * y) / (4 * _D * t);
-            if (expression2 > 300)
+            if (t < 0.0)
             {
-                expression2 = 300;
+                return 0.0;
             }
-            double expression3 = SpecialFunctions.ExponentialIntegral(expression2);
-            double result = expression1 * expression3;
+            
+            double expression1 = _mu / (4 * Math.PI * _k * _H);
+            double expression2 = -(x * x + y * y);
+            double expression3 = (4 * _D * t);
+            double expression4 = -(x * x + y * y) / (4 * _D * t);
+            double expression5 = SpecialFunctions.ExponentialIntegral(-(x * x + y * y) / (4 * _D * t));
+            
+            double result = _mu / (4 * Math.PI * _k * _H) * SpecialFunctions.ExponentialIntegral(-(x * x + y * y) / (4 * _D * t));
             
             return result;
         }
 
         internal double[,] ComputatePressure(double[] x, double[] y,double t, 
-            double[][] coords, (double t, double Q)[][] tQs, double x0 = 0, double y0 = 0)
+            double[][] coords, (double t, double Q)[][] tQs)
         {
 
             double[,] X = new double[x.Length, y.Length];
             double[,] Y = new double[x.Length, y.Length];
             double[,] P = new double[x.Length, y.Length];
 
+            // MeshGrid
             for (int i = 0; i < x.Length; i++)
             {
                 for (int j = 0; j < y.Length; j++)
@@ -61,10 +66,12 @@
                     {
                         for (int n = 0; n < y.Length; n++)
                         {
+                            // tQs[i+1][1] - tQs[i][1]
                             double q = (tQs[k][i + 1].Q - tQs[k][i].Q);
-                            double _p = p(X[m, n] - coords[k][0], Y[m, n] - coords[k][1], t - tQs[k][i].t);
-                            double value = q * _p;
-                            P[m, n] += value;
+                            // p1(X-x0, Y-y0, t-tQs[i][0])
+                            double pressure = p(X[m, n] - coords[k][0], Y[m, n] - coords[k][1], t - tQs[k][i].t);
+                            double result = q * pressure;
+                            P[m, n] += result;
                         }
                     }
                 }
@@ -73,6 +80,7 @@
                 {
                     for (int n = 0; n < y.Length; n++)
                     {
+                        //tQs[0][1]*p1(X-x0, Y-y0, t)
                         double value = tQs[k][0].Q * p(X[m, n] - coords[k][0], Y[m, n] - coords[k][1], t);
                         P[m, n] += value;
                     }
@@ -83,6 +91,7 @@
             {
                 for (int n = 0; n < y.Length; n++)
                 {
+                    // P+=p0
                     P[m, n] += _p0;
                 }
             }

@@ -516,7 +516,7 @@
             double[] times = new double[days + 1];
             for (int i = 0; i <= days; i++)
             {
-                times[i] = (secondsInDay * i) + 1000000;
+                times[i] = (secondsInDay * i) + 2000000;
             }
             return times;
         }
@@ -534,7 +534,9 @@
             {
                 return;
             }
-            UpdateHeatMap(_pressures[num]);
+
+            var pressure = _pressures[num];
+            UpdateHeatMap(pressure);
         }
 
         private void stepNumericUpDown_ValueChanged(object sender, EventArgs e)

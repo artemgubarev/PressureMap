@@ -9,6 +9,11 @@ namespace PressureMap
     {
         public Well(int number, double x, double y, (DateTime Date, double value)[] q)
         {
+            for (int i = 0; i < q.Length; i++)
+            {
+                q[i].value /= 86400.0;
+            }
+
             Number = number;
             X = x;
             Y = y;

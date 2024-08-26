@@ -669,6 +669,7 @@
             this.pressureHeatmapControl.Border.Visibility = DevExpress.Utils.DefaultBoolean.False;
             this.tablePanel1.SetColumn(this.pressureHeatmapControl, 1);
             this.pressureHeatmapControl.Legend.FillStyle.FillMode = DevExpress.XtraCharts.FillMode.Gradient;
+            this.pressureHeatmapControl.Legend.Visibility = DevExpress.Utils.DefaultBoolean.False;
             this.pressureHeatmapControl.Location = new System.Drawing.Point(468, 6);
             this.pressureHeatmapControl.Name = "pressureHeatmapControl";
             this.tablePanel1.SetRow(this.pressureHeatmapControl, 0);
